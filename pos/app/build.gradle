@@ -47,5 +47,5 @@ dependencies {
     //联迪A8底层库
     compile(name: 'landi-porting-bill99-0.2.20', ext: 'aar')
 
-    compile 'com.jakewharton:butterknife:8.8.1'
+    
 }
