@@ -10,6 +10,7 @@ import android.os.Environment;
 
 public class Constant {
 
+    public static final String USERS = "users";
     public static final String TOKEN = "token";
     public static final String USER_ID = "userId";
     public static final String LOGIN_NAME = "loginName";

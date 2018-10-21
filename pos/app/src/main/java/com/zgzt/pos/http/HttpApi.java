@@ -29,7 +29,7 @@ import okhttp3.Response;
 
 public class HttpApi {
 
-    public static Handler mHandler = new Handler(Looper.getMainLooper());
+    public static Handler mHandler = new Handler();
 
     /**
      * 获取token

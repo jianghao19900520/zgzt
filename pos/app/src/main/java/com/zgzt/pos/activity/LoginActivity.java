@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView login_btn;//登录
 
     private String[] users;
+    private String userStrs;
     private String cashier;//输入的账号
     private String password;//输入的密码
 
@@ -61,9 +62,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         mContext = this;
         initView();
-        initDialog(getString(R.string.login_hint));
+        initDialog();
+        initData();
     }
 
+    /**
+     * 初始化控件
+     */
     private void initView() {
         login_cashier_input = findViewById(R.id.login_cashier_input);
         login_cashier_more_btn = findViewById(R.id.login_cashier_more_btn);
@@ -76,14 +81,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * 登录对话框
+     * 初始化对话框对话框
      */
-    private void initDialog(String message) {
+    private void initDialog() {
         tipDialog = new QMUITipDialog.Builder(LoginActivity.this)
                 .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-                .setTipWord(message)
+                .setTipWord(getString(R.string.login_hint))
                 .create();
         tipDialog.setCancelable(false);
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initData(){
+        userStrs = PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.USERS);
+        if (userStrs.length()>0){
+            login_cashier_more_btn.setVisibility(View.VISIBLE);
+            users = userStrs.split(",");
+            login_cashier_input.setText(users[0]);
+        }else {
+            login_cashier_more_btn.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -205,7 +224,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 进入主页
      */
     private final void goMainActivity() {
+        saveUser();
         startActivity(new Intent(this, HomeActivity.class));
         finish();
+    }
+
+    /**
+     * 保存登录记录
+     */
+    private void saveUser() {
+        if (userStrs.length() > 0){
+            String cacheStr = userStrs + ",";
+            if (cacheStr.indexOf(cashier+",") > -1){
+                cacheStr = cacheStr.replace(cashier+",","");
+                if (cacheStr.endsWith(",")){
+                    cacheStr = cacheStr.substring(0,cacheStr.length()-1);
+                }
+                PreferencesUtil.getInstance(BaseApplication.mContext).putString(Constant.USERS,cashier + "," + cacheStr);
+            }else {
+                PreferencesUtil.getInstance(BaseApplication.mContext).putString(Constant.USERS,cashier + "," + userStrs);
+            }
+        }else {
+            PreferencesUtil.getInstance(BaseApplication.mContext).putString(Constant.USERS,cashier);
+        }
     }
 }
