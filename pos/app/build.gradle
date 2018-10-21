@@ -41,7 +41,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
+    compile 'com.qmuiteam:qmui:1.0.6'
     //支付SDK
     compile(name: 'pos-sdk-spos-release-1.1.8.13', ext: 'aar')
     //联迪A8底层库
