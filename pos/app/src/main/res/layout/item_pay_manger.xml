@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/item_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:background="@drawable/btn_bg_white"
+        >
+        <TextView
+            android:id="@+id/item_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_33"
+            android:textSize="13dp"
+            android:layout_marginLeft="10dp"
+            android:text="16日"/>
+        <ImageView
+            android:id="@+id/item_arrow_right"
+            android:layout_width="7dp"
+            android:layout_height="13dp"
+            android:src="@drawable/arrow_right"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="4dp"/>
+        <TextView
+            android:id="@+id/item_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="#ff5c00"
+            android:text="￥2531.26"
+            android:layout_toLeftOf="@id/item_arrow_right"/>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#c0c0c0"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+</LinearLayout>

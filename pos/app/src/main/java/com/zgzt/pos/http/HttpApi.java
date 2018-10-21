@@ -1,10 +1,8 @@
 package com.zgzt.pos.http;
 
 import android.os.Handler;
-import android.os.Looper;
 
 import com.alibaba.fastjson.JSONObject;
-import com.landicorp.android.eptapi.utils.SystemInfomation;
 import com.zgzt.pos.BaseApplication;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.utils.LogUtils;
@@ -31,8 +29,11 @@ public class HttpApi {
 
     public static Handler mHandler = new Handler();
 
+
     /**
      * 获取token
+     * @param username 用户名
+     * @param password 密码
      */
     public static void getToken(String username, String password, final HttpCallback callback) {
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -80,6 +81,7 @@ public class HttpApi {
 
     /**
      * 登录
+     * @param pointofsalesCode 设备识别码
      */
     public static void login(String pointofsalesCode, final HttpCallback callback) {
         JSONObject json = new JSONObject();
@@ -87,7 +89,55 @@ public class HttpApi {
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
         Request request = new Request.Builder()
-                .url(UrlConfig.BASE_URL + UrlConfig.LOGIN)
+                .url(UrlConfig.BASE_URL + UrlConfig.LOGIN_URL)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .post(requestBody)
+                .build();
+        LogUtils.json(request.url().toString());
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String result = response.body().string();
+                            LogUtils.json(result);
+                            callback.onResponse(result);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 支付信息列表
+     * @param pointofsalesCode 会员id
+     * @param statisticsType  1-会员 2-门店
+     * @param statisticsTimeType 1-本月,2-上月,3-自定义
+     */
+    public static void payList(String pointofsalesCode, String statisticsType, String statisticsTimeType, final HttpCallback callback) {
+        JSONObject json = new JSONObject();
+        json.put("pointofsalesCode", pointofsalesCode);
+        json.put("statisticsType", statisticsType);
+        json.put("statisticsTimeType", statisticsTimeType);
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.PAY_LIST_URL)
                 .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
                 .post(requestBody)
                 .build();

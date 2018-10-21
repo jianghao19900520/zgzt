@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 主页
+ */
 public class HomeActivity extends AppCompatActivity implements ScaleRelativeLayout.OnClickListener {
 
     private Context mContext;
@@ -48,6 +51,9 @@ public class HomeActivity extends AppCompatActivity implements ScaleRelativeLayo
         initTitle();
     }
 
+    /**
+     * 初始化控件
+     */
     private void initView() {
         title_text = findViewById(R.id.title_text);
         title_right_image = findViewById(R.id.title_right_image);
@@ -59,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements ScaleRelativeLayo
         cashier_desk_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(mContext,CashierDeskActivity.class));
+                startActivity(new Intent(mContext,CashierDeskActivity.class));
             }
         });
         online_order_pay_btn.setOnClickListener(this);
@@ -68,6 +74,9 @@ public class HomeActivity extends AppCompatActivity implements ScaleRelativeLayo
         goods_allocation_btn.setOnClickListener(this);
     }
 
+    /**
+     * 初始化标题栏
+     */
     private void initTitle(){
         title_text.setText(getString(R.string.app_name));
         title_right_image.setVisibility(View.VISIBLE);
@@ -120,10 +129,10 @@ public class HomeActivity extends AppCompatActivity implements ScaleRelativeLayo
 //                intent = new Intent(this,PrinterActivity.class);
                 break;
             case R.id.pay_manager_btn:
-//                intent = new Intent(this,PayManger.class);
+                intent = new Intent(this,PayMangerActivity.class);
                 break;
             case R.id.stock_query_btn:
-//                intent = new Intent(this,StockQueryActivity.class);
+                intent = new Intent(this,StockQueryActivity.class);
                 break;
             case R.id.goods_allocation_btn:
 //                intent = new Intent(this, AllocationActivity.class);

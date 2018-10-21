@@ -31,7 +31,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.HomeActivity"></activity>
+        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".activity.CashierDeskActivity" />
+        <activity android:name=".activity.PayMangerActivity" />
+        <activity android:name=".activity.StockQueryActivity" />
+        <activity android:name=".activity.GoodsAllocationActivity"></activity>
     </application>
 
 </manifest>
