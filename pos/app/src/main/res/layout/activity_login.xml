@@ -12,19 +12,19 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp">
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp">
 
         <ImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="45dp"
             android:src="@drawable/logo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="25dp"
             android:text="智能支付终端"
             android:textColor="@color/color_33"
             android:textSize="20dp" />
@@ -68,7 +68,156 @@
                 android:background="#d0d0d0" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="门店编号"
+                android:textColor="@color/color_33"
+                android:textSize="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="13dp"
+                    android:src="@drawable/shop" />
+
+                <EditText
+                    android:id="@+id/login_shop_code_input"
+                    style="@style/loginInput"
+                    android:hint="请输入门店编号"
+                    android:inputType="text"
+                    android:maxLength="20" />
+
+                <ImageView
+                    android:id="@+id/login_shop_code_more_btn"
+                    android:layout_width="21dp"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="13dp"
+                    android:clickable="true"
+                    android:visibility="gone"
+                    android:src="@drawable/extend" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#d0d0d0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="收银员"
+                android:textColor="@color/color_33"
+                android:textSize="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="13dp"
+                    android:src="@drawable/cashier" />
+
+                <EditText
+                    android:id="@+id/login_cashier_input"
+                    style="@style/loginInput"
+                    android:hint="请输入收银员账号"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:text="cashier01"
+                    android:textSize="16dp"/>
+
+                <ImageView
+                    android:id="@+id/login_cashier_more_btn"
+                    android:layout_width="21dp"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="10dp"
+                    android:clickable="true"
+                    android:paddingTop="13dp"
+                    android:visibility="gone"
+                    android:src="@drawable/extend" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#d0d0d0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="密码"
+                android:textColor="@color/color_33"
+                android:textSize="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="13dp"
+                    android:src="@drawable/password" />
+                <EditText
+                    android:id="@+id/login_password_input"
+                    style="@style/loginInput"
+                    android:hint="请输入密码"
+                    android:inputType="textPassword"
+                    android:maxLength="20"
+                    android:text="111111"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#d0d0d0" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="91dp"
+            android:background="@drawable/btn_bg_corners"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="登录"
+            android:textColor="@android:color/white"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </ScrollView>
