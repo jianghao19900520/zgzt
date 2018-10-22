@@ -64,7 +64,7 @@ public class PayMangerFragment extends Fragment implements OnRefreshListener {
         Bundle arguments = getArguments();
         mType = arguments.getInt("type");
         initData();
-        getPayList();
+        getPayList(null);
         return mView;
     }
 
@@ -76,7 +76,7 @@ public class PayMangerFragment extends Fragment implements OnRefreshListener {
         list_view.setAdapter(adapter);
     }
 
-    public void getPayList() {
+    public void getPayList(final RefreshLayout refreshlayout) {
         String memberId = PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_ID);
         HttpApi.payList(memberId, 2, mType + 1, new HttpCallback<PayMangerNode>() {
             @Override
@@ -86,17 +86,19 @@ public class PayMangerFragment extends Fragment implements OnRefreshListener {
                     list.addAll(result.getResult().getList());
                     adapter.notifyDataSetChanged();
                 }
+                if (refreshlayout != null) refreshlayout.finishRefresh();
             }
 
             @Override
             public void onFailure(IOException e) {
+                if (refreshlayout != null) refreshlayout.finishRefresh();
             }
         });
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
-
+        getPayList(refreshlayout);
     }
 
     public class PayMangerAdapter extends BaseAdapter {
@@ -159,7 +161,7 @@ public class PayMangerFragment extends Fragment implements OnRefreshListener {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), DayPayActivity.class);
-                    Bundle bundle=new Bundle();
+                    Bundle bundle = new Bundle();
                     bundle.putSerializable("node", node);
                     intent.putExtra("bundle", bundle);
                     startActivity(intent);
