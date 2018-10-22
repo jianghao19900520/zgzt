@@ -60,6 +60,6 @@
         android:drawableLeft="@drawable/screen"
         android:drawablePadding="5dp"
         android:textColor="@android:color/white"
-        android:text=""
+        android:text="筛选"
         android:visibility="gone"/>
 </RelativeLayout>

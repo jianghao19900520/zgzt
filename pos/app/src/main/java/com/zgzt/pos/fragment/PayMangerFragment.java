@@ -68,7 +68,7 @@ public class PayMangerFragment extends Fragment implements OnRefreshListener {
 
     public void getPayList() {
         String userId = PreferencesUtil.getInstance(mContext).getString(Constant.USER_ID);
-        HttpApi.payList(userId, "1", String.valueOf(mType), new HttpCallback() {
+        HttpApi.payList(userId, 2, mType + 1, new HttpCallback() {
             @Override
             public void onResponse(String result) {
                 System.out.println(result);

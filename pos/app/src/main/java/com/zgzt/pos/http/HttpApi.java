@@ -50,6 +50,7 @@ public class HttpApi {
                 .post(requestBody)
                 .build();
         LogUtils.json(request.url().toString());
+        LogUtils.json(requestBody.toString());
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -94,6 +95,7 @@ public class HttpApi {
                 .post(requestBody)
                 .build();
         LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -125,13 +127,13 @@ public class HttpApi {
 
     /**
      * 支付信息列表
-     * @param pointofsalesCode 会员id
+     * @param memberId 会员id
      * @param statisticsType  1-会员 2-门店
      * @param statisticsTimeType 1-本月,2-上月,3-自定义
      */
-    public static void payList(String pointofsalesCode, String statisticsType, String statisticsTimeType, final HttpCallback callback) {
+    public static void payList(String memberId, int statisticsType, int statisticsTimeType, final HttpCallback callback) {
         JSONObject json = new JSONObject();
-        json.put("pointofsalesCode", pointofsalesCode);
+        json.put("memberId", memberId);
         json.put("statisticsType", statisticsType);
         json.put("statisticsTimeType", statisticsTimeType);
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -142,6 +144,7 @@ public class HttpApi {
                 .post(requestBody)
                 .build();
         LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
