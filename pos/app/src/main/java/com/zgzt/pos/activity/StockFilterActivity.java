@@ -15,4 +15,12 @@ public class StockFilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_filter);
     }
+
+    @Override
+    protected void onPause() {
+        overridePendingTransition(0, 0);
+        super.onPause();
+    }
+
 }
+

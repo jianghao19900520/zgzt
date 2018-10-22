@@ -110,6 +110,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
 //                intent.putExtra("whId",whId);
 //                intent.putExtra("whName",whName);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 break;
             case R.id.scan_btn:
                 startActivity(new Intent(this, ScannerActivity.class));
