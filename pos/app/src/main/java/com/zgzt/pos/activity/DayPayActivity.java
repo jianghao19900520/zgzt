@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import com.zgzt.pos.R;
 
+/**
+ * 支付明细页面
+ */
 public class DayPayActivity extends AppCompatActivity {
 
     @Override
