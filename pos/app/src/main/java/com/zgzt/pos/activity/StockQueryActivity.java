@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * 库存查询页面
  */
-public class StockQueryActivity extends AppCompatActivity implements View.OnClickListener{
+public class StockQueryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Context mContext;
     private ImageView title_back_btn;//标题栏返回键
@@ -60,13 +60,15 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     /**
      * 初始化控件
      */
-    private void initView(){
+    private void initView() {
         title_back_btn = findViewById(R.id.title_back_btn);
         title_text = findViewById(R.id.title_text);
         title_right_text_image = findViewById(R.id.title_right_text_image);
         code_input_et = findViewById(R.id.code_input_et);
         findViewById(R.id.scan_btn).setOnClickListener(this);
         findViewById(R.id.search_btn).setOnClickListener(this);
+        title_back_btn.setOnClickListener(this);
+        title_right_text_image.setOnClickListener(this);
         smart_refresh_layout = findViewById(R.id.smart_refresh_layout);
         list_view = findViewById(R.id.list_view);
         adapter = new StockQueryAdapter();
@@ -86,7 +88,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     /**
      * 初始化数据
      */
-    public void initData(){
+    public void initData() {
         goodsList.add(new GoodsNode());
         goodsList.add(new GoodsNode());
         goodsList.add(new GoodsNode());
@@ -100,17 +102,20 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.title_back_btn:
+                finish();
+                break;
             case R.id.title_right_text_image:
-//                Intent intent = new Intent(this,FilterActivity.class);
+                Intent intent = new Intent(this, StockFilterActivity.class);
 //                intent.putExtra("whId",whId);
 //                intent.putExtra("whName",whName);
-//                startActivity(intent);
+                startActivity(intent);
                 break;
             case R.id.scan_btn:
                 startActivity(new Intent(this, ScannerActivity.class));
                 break;
             case R.id.search_btn:
-                if(checkInput()){
+                if (checkInput()) {
                     initData();
                 }
                 break;
@@ -120,9 +125,9 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     /**
      * 检测输入内容
      */
-    private boolean checkInput(){
+    private boolean checkInput() {
         searchKey = code_input_et.getText().toString().trim();
-        if (TextUtils.isEmpty(searchKey)){
+        if (TextUtils.isEmpty(searchKey)) {
             ToastUtils.showShort(BaseApplication.mContext, "请输入搜索内容");
             return false;
         }
