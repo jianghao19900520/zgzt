@@ -27,6 +27,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -49,6 +50,7 @@
             android:name=".activity.StockFilterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AnimAppTheme" />
+        <activity android:name=".activity.DayPayActivity"></activity>
     </application>
 
 </manifest>

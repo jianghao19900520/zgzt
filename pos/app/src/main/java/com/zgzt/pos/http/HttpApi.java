@@ -2,9 +2,12 @@ package com.zgzt.pos.http;
 
 import android.os.Handler;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.zgzt.pos.BaseApplication;
 import com.zgzt.pos.base.Constant;
+import com.zgzt.pos.node.PayMangerNode;
 import com.zgzt.pos.utils.LogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 
@@ -131,7 +134,7 @@ public class HttpApi {
      * @param statisticsType  1-会员 2-门店
      * @param statisticsTimeType 1-本月,2-上月,3-自定义
      */
-    public static void payList(String memberId, int statisticsType, int statisticsTimeType, final HttpCallback callback) {
+    public static void payList(String memberId, int statisticsType, int statisticsTimeType, final HttpCallback<PayMangerNode> callback) {
         JSONObject json = new JSONObject();
         json.put("memberId", memberId);
         json.put("statisticsType", statisticsType);
@@ -164,7 +167,8 @@ public class HttpApi {
                         try {
                             String result = response.body().string();
                             LogUtils.json(result);
-                            callback.onResponse(result);
+                            PayMangerNode node = JSON.parseObject(result,new TypeReference<PayMangerNode>(){});
+                            callback.onResponse(node);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

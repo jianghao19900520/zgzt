@@ -11,7 +11,7 @@ import okhttp3.Response;
  * desc ：
  */
 
-public interface HttpCallback {
-    void onResponse(String result);
+public interface HttpCallback<T> {
+    void onResponse(T result);
     void onFailure(IOException e);
 }

@@ -167,8 +167,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tipDialog.show();
         HttpApi.getToken(cashier, password, new HttpCallback() {
             @Override
-            public void onResponse(String result) {
-                JSONObject data = JSONObject.parseObject(result);
+            public void onResponse(Object result) {
+                JSONObject data = JSONObject.parseObject(String.valueOf(result));
                 int code = data.getInteger("code");
                 if (code == 0) {
                     PreferencesUtil.getInstance(mContext).putString(Constant.TOKEN, data.getString("access_token"));
@@ -196,8 +196,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void login() {
         HttpApi.login(SystemInfomation.getDeviceInfo().getSerialNo(), new HttpCallback() {
             @Override
-            public void onResponse(String result) {
-                JSONObject jsonObject = JSONObject.parseObject(result);
+            public void onResponse(Object result) {
+                JSONObject jsonObject = JSONObject.parseObject(String.valueOf(result));
                 int code = jsonObject.getInteger("code");
                 if (code == 0) {
                     JSONObject object = jsonObject.getJSONObject("result");
