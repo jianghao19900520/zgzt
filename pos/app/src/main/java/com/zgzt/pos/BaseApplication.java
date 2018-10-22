@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.bill99.smartpos.sdk.api.BillPayment;
+import com.example.ExceptionUtils.MyErrorHandler;
 
 public class BaseApplication extends Application {
     public static BaseApplication mContext;
@@ -19,7 +20,16 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        initExceptionLog();
         initPaySDK();
+    }
+
+    /**
+     * 初始化错误日志收集
+     */
+    private void initExceptionLog(){
+        MyErrorHandler me = MyErrorHandler.getInstance();
+        me.init();
     }
 
     /**
@@ -31,4 +41,5 @@ public class BaseApplication extends Application {
         BillPayment.setDebugMode(false);
         BillPayment.setChannelType("spos");
     }
+
 }

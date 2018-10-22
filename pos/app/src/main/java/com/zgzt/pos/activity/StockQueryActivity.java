@@ -70,6 +70,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         smart_refresh_layout = findViewById(R.id.smart_refresh_layout);
         list_view = findViewById(R.id.list_view);
         adapter = new StockQueryAdapter();
+        goodsList = new ArrayList<>();
         list_view.setAdapter(adapter);
     }
 
@@ -86,7 +87,6 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
      * 初始化数据
      */
     public void initData(){
-        goodsList = new ArrayList<>();
         goodsList.add(new GoodsNode());
         goodsList.add(new GoodsNode());
         goodsList.add(new GoodsNode());
@@ -94,6 +94,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         goodsList.add(new GoodsNode());
         goodsList.add(new GoodsNode());
         goodsList.add(new GoodsNode());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
