@@ -275,13 +275,13 @@ public class HttpApi {
      * @param pageSize
      * @param whId
      */
-    public static void stocksearchlist(int pageIndex, int pageSize, String whId, final HttpCallback callback) {
+    public static void stocksearchlist(int pageIndex, int pageSize, String whId, String searchKey, final HttpCallback callback) {
         JSONObject json = new JSONObject();
         json.put("pageIndex", pageIndex);
         json.put("pageSize", pageSize);
         json.put("whId", whId);
         json.put("sortType", 1);
-        json.put("searchKey", "");
+        json.put("searchKey", searchKey);
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
         Request request = new Request.Builder()

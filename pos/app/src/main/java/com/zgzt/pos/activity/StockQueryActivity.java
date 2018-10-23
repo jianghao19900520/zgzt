@@ -118,11 +118,10 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     public void initData() {
         whId = PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_ID);
         whName = PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_NAME);
-        getSearchStock();
     }
 
     private void getSearchStock() {
-        HttpApi.stocksearchlist(pageIndex, Constant.PAGE_SIZE, whId, new HttpCallback() {
+        HttpApi.stocksearchlist(pageIndex, Constant.PAGE_SIZE, whId, searchKey, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
                 if (pageIndex == 0) {
@@ -179,8 +178,8 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.title_right_text_image:
                 Intent intent = new Intent(this, StockFilterActivity.class);
-                intent.putExtra("whId",whId);
-                intent.putExtra("whName",whName);
+                intent.putExtra("whId", whId);
+                intent.putExtra("whName", whName);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 break;
@@ -188,25 +187,11 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
                 startActivity(new Intent(this, ScannerActivity.class));
                 break;
             case R.id.search_btn:
-                if (checkInput()) {
-                    pageIndex = 0;
-                    getSearchStock();
-                }
+                searchKey = code_input_et.getText().toString().trim();
+                pageIndex = 0;
+                getSearchStock();
                 break;
         }
-    }
-
-    /**
-     * 检测输入内容
-     */
-    private boolean checkInput() {
-        searchKey = code_input_et.getText().toString().trim();
-        if (TextUtils.isEmpty(searchKey)) {
-//            ToastUtils.showShort(BaseApplication.mContext, "请输入搜索内容");
-//            return false;
-            searchKey = "";
-        }
-        return true;
     }
 
     public class StockQueryAdapter extends BaseAdapter {
