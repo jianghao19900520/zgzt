@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.bill99.smartpos.sdk.api.BillPayment;
+import com.bill99.smartpos.sdk.api.BillPaymentCallback;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.ExceptionUtils.MyErrorHandler;
@@ -18,6 +19,8 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.zgzt.pos.utils.DynamicTimeFormat;
+import com.zgzt.pos.utils.ToastUtils;
+import com.zgzt.pos.utils.Utils;
 
 public class BaseApplication extends Application {
     public static BaseApplication mContext;
@@ -39,9 +42,10 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        Utils.init(this);
         initExceptionLog();
-        initPaySDK();
         initRefresh();
+        initPaySDK();
     }
 
     /**
