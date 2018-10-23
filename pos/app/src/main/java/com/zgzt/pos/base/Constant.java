@@ -16,5 +16,6 @@ public class Constant {
     public static final String LOGIN_NAME = "loginName";
     public static final String WAREHOUSE_ID = "warehouseId";
     public static final String WAREHOUSE_NAME = "warehouse_name";
+    public static final int PAGE_SIZE = 10;
 
 }

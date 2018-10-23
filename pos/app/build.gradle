@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.qmuiteam:qmui:1.0.6'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-7'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    compile 'com.github.bumptech.glide:glide:4.3.1'
+    implementation 'com.github.bumptech.glide:glide:4.3.1'
     //支付SDK
     compile(name: 'pos-sdk-spos-release-1.1.8.13', ext: 'aar')
     //联迪A8底层库

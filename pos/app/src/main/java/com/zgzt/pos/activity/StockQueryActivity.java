@@ -11,21 +11,36 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.landicorp.module.scanner.ScannerActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.zgzt.pos.BaseApplication;
 import com.zgzt.pos.R;
+import com.zgzt.pos.base.Constant;
+import com.zgzt.pos.http.HttpApi;
+import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.node.GoodsNode;
+import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 库存查询页面
  */
-public class StockQueryActivity extends AppCompatActivity implements View.OnClickListener {
+public class StockQueryActivity extends AppCompatActivity implements View.OnClickListener, OnRefreshLoadmoreListener {
 
     private Context mContext;
     private ImageView title_back_btn;//标题栏返回键
@@ -38,8 +53,11 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     private LayoutInflater inflater;
 
     private String searchKey;
-    private List<GoodsNode> goodsList;
+    private List<JSONObject> listData;
     private StockQueryAdapter adapter;
+    private int pageIndex = 0;
+    private String whId;
+    private String whName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +85,22 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         smart_refresh_layout = findViewById(R.id.smart_refresh_layout);
         list_view = findViewById(R.id.list_view);
         adapter = new StockQueryAdapter();
-        goodsList = new ArrayList<>();
+        listData = new ArrayList<>();
         list_view.setAdapter(adapter);
+        smart_refresh_layout.setEnableLoadmore(false);
+        smart_refresh_layout.setOnRefreshLoadmoreListener(this);
+    }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+        pageIndex++;
+        getSearchStock();
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        pageIndex = 0;
+        getSearchStock();
     }
 
     /**
@@ -84,13 +116,58 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
      * 初始化数据
      */
     public void initData() {
-        goodsList.add(new GoodsNode());
-        goodsList.add(new GoodsNode());
-        goodsList.add(new GoodsNode());
-        goodsList.add(new GoodsNode());
-        goodsList.add(new GoodsNode());
-        goodsList.add(new GoodsNode());
-        goodsList.add(new GoodsNode());
+        whId = PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_ID);
+        whName = PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_NAME);
+        getSearchStock();
+    }
+
+    private void getSearchStock() {
+        HttpApi.stocksearchlist(pageIndex, Constant.PAGE_SIZE, whId, new HttpCallback() {
+            @Override
+            public void onResponse(Object result) {
+                if (pageIndex == 0) {
+                    smart_refresh_layout.finishRefresh();
+                } else {
+                    smart_refresh_layout.finishLoadmore();
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(String.valueOf(result));
+                    int code = jsonObject.getInt("code");
+                    if (code == 0) {
+                        setDataTolist(jsonObject.getJSONObject("result"));
+                    } else {
+                        ToastUtils.showShort(BaseApplication.mContext, jsonObject.getString("message"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(IOException e) {
+
+            }
+        });
+    }
+
+    /**
+     * 配置数据
+     */
+    private void setDataTolist(JSONObject result) throws JSONException {
+        int recordCount = result.getInt("recordCount");
+        if ((pageIndex + 1) * Constant.PAGE_SIZE < recordCount) {
+            smart_refresh_layout.setEnableLoadmore(true);
+        } else {
+            smart_refresh_layout.setEnableLoadmore(false);
+        }
+        if (pageIndex == 0) {
+            listData.clear();
+        }
+        JSONArray list = result.getJSONArray("list");
+        int len = list.length();
+        for (int i = 0; i < len; i++) {
+            listData.add(list.getJSONObject(i));
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -102,8 +179,8 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.title_right_text_image:
                 Intent intent = new Intent(this, StockFilterActivity.class);
-//                intent.putExtra("whId",whId);
-//                intent.putExtra("whName",whName);
+                intent.putExtra("whId",whId);
+                intent.putExtra("whName",whName);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 break;
@@ -112,7 +189,8 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.search_btn:
                 if (checkInput()) {
-                    initData();
+                    pageIndex = 0;
+                    getSearchStock();
                 }
                 break;
         }
@@ -124,8 +202,9 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     private boolean checkInput() {
         searchKey = code_input_et.getText().toString().trim();
         if (TextUtils.isEmpty(searchKey)) {
-            ToastUtils.showShort(BaseApplication.mContext, "请输入搜索内容");
-            return false;
+//            ToastUtils.showShort(BaseApplication.mContext, "请输入搜索内容");
+//            return false;
+            searchKey = "";
         }
         return true;
     }
@@ -134,12 +213,12 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
 
         @Override
         public int getCount() {
-            return goodsList.size();
+            return listData.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return goodsList.get(position);
+            return listData.get(position);
         }
 
         @Override
@@ -151,37 +230,65 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = null;
             StockQueryAdapter.ViewHolder holder = null;
-//            String sss = (String) getItem(position);
-            String sss = "sss";
-            if (null == sss) return convertView;
+            JSONObject object = (JSONObject) getItem(position);
+            if (null == object) return convertView;
             if (null != convertView) {
                 holder = (StockQueryAdapter.ViewHolder) convertView.getTag();
             }
             if (null == holder) {
                 holder = new StockQueryAdapter.ViewHolder();
-                view = inflater.inflate(R.layout.item_pay_manger, null);
+                view = inflater.inflate(R.layout.item_stock_query, null);
                 view.setTag(holder);
-                initItem(view, holder, sss);
+                initItem(view, holder, object);
             } else {
                 view = convertView;
                 holder = (StockQueryAdapter.ViewHolder) convertView.getTag();
                 view.setTag(holder);
-                updateItem(view, holder, sss);
+                updateItem(view, holder, object);
             }
             return view;
         }
 
         private class ViewHolder {
-            public TextView mTextView;
+            public ImageView item_img;
+            public TextView item_code;
+            public TextView item_name;
+            public TextView item_stockVolume;
         }
 
-        private void initItem(View view, StockQueryAdapter.ViewHolder holder, String sss) {
-            holder.mTextView = (TextView) view.findViewById(R.id.item_day);
-            updateItem(view, holder, sss);
+        private void initItem(View view, StockQueryAdapter.ViewHolder holder, JSONObject object) {
+            holder.item_img = view.findViewById(R.id.item_img);
+            holder.item_code = view.findViewById(R.id.item_code);
+            holder.item_name = view.findViewById(R.id.item_name);
+            holder.item_stockVolume = view.findViewById(R.id.item_stockVolume);
+            updateItem(view, holder, object);
         }
 
-        private void updateItem(View view, StockQueryAdapter.ViewHolder holder, String sss) {
-            holder.mTextView.setText(sss);
+        private void updateItem(View view, StockQueryAdapter.ViewHolder holder, JSONObject item) {
+            try {
+                Glide.with(mContext).setDefaultRequestOptions(BaseApplication.options110)
+                        .load(item.getString("imgUrl"))
+                        .thumbnail(0.5f)
+                        .into((holder.item_img));
+                holder.item_code.setText(item.getString("productCode"));
+                holder.item_name.setText(item.getString("productName"));
+                holder.item_stockVolume.setText(item.getString("stockVolume") + "件");
+                JSONArray array = item.getJSONArray("outWhSkuStockSearches");
+                LinearLayout skuLayout = view.findViewById(R.id.sku_layout);
+                skuLayout.removeAllViews();
+                int len = array.length();
+                for (int i = 0; i < len; i++) {
+                    JSONObject itemData = array.getJSONObject(i);
+                    View stock_sku = inflater.inflate(R.layout.item_stock_sku, null);
+                    TextView skuName = stock_sku.findViewById(R.id.sku_name);
+                    TextView skuNum = stock_sku.findViewById(R.id.sku_num);
+                    skuName.setText(itemData.getString("skuProperty"));
+                    skuNum.setText(itemData.getString("stockVolume") + "件");
+                    skuLayout.addView(stock_sku);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

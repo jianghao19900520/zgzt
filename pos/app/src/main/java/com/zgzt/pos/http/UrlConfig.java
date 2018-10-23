@@ -21,5 +21,9 @@ public class UrlConfig {
     public static final String DAY_PAY_CLERK = "business/services/pointofsales/getuserlistbywarehouse/";
     //每日支付明细列表
     public static final String DAY_PAY_DETAILED_LIST = "business/services/msorder/pliststoreorder";
+    //搜索库存
+    public static final String SEARCH_STOCK_LIST = "business/services/whproductstock/stocksearchlist";
+
+
 
 }

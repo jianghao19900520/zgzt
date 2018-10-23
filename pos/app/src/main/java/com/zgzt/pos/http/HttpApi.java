@@ -269,4 +269,51 @@ public class HttpApi {
         });
     }
 
+    /**
+     * 支付明细
+     * @param pageIndex
+     * @param pageSize
+     * @param whId
+     */
+    public static void stocksearchlist(int pageIndex, int pageSize, String whId, final HttpCallback callback) {
+        JSONObject json = new JSONObject();
+        json.put("pageIndex", pageIndex);
+        json.put("pageSize", pageSize);
+        json.put("whId", whId);
+        json.put("sortType", 1);
+        json.put("searchKey", "");
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.SEARCH_STOCK_LIST)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .post(requestBody)
+                .build();
+        LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
+                    }
+                });
+            }
+        });
+    }
+
 }
