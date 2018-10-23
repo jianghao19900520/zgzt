@@ -50,7 +50,8 @@
             android:name=".activity.StockFilterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AnimAppTheme" />
-        <activity android:name=".activity.DayPayActivity"></activity>
+        <activity android:name=".activity.DayPayActivity" />
+        <activity android:name=".activity.SearchActivity"></activity>
     </application>
 
 </manifest>
