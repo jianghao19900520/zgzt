@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/pop_item_bg"
+    android:button="@null"
+    android:gravity="center_vertical"
+    android:paddingLeft="10dp"
+    android:text="张三"
+    android:textColor="@color/sku_btn_color"
+    android:textSize="13dp">
+
+</RadioButton>

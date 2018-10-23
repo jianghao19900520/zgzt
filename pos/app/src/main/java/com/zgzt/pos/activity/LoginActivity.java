@@ -22,23 +22,9 @@ import com.zgzt.pos.R;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
-import com.zgzt.pos.http.UrlConfig;
-import com.zgzt.pos.node.User;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
-
-import org.json.JSONException;
-
 import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * 登录页面

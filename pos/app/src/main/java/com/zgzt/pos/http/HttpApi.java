@@ -1,6 +1,7 @@
 package com.zgzt.pos.http;
 
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -35,6 +36,7 @@ public class HttpApi {
 
     /**
      * 获取token
+     *
      * @param username 用户名
      * @param password 密码
      */
@@ -67,16 +69,12 @@ public class HttpApi {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            String result = response.body().string();
-                            LogUtils.json(result);
-                            callback.onResponse(result);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        callback.onResponse(result);
                     }
                 });
             }
@@ -85,6 +83,7 @@ public class HttpApi {
 
     /**
      * 登录
+     *
      * @param pointofsalesCode 设备识别码
      */
     public static void login(String pointofsalesCode, final HttpCallback callback) {
@@ -112,12 +111,12 @@ public class HttpApi {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            String result = response.body().string();
-                            LogUtils.json(result);
                             callback.onResponse(result);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -130,8 +129,9 @@ public class HttpApi {
 
     /**
      * 支付信息列表
-     * @param memberId 会员id
-     * @param statisticsType  1-会员 2-门店
+     *
+     * @param memberId           会员id
+     * @param statisticsType     1-会员 2-门店
      * @param statisticsTimeType 1-本月,2-上月,3-自定义
      */
     public static void payList(String memberId, int statisticsType, int statisticsTimeType, final HttpCallback<PayMangerNode> callback) {
@@ -161,17 +161,108 @@ public class HttpApi {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            String result = response.body().string();
-                            LogUtils.json(result);
-                            PayMangerNode node = JSON.parseObject(result,new TypeReference<PayMangerNode>(){});
+                            PayMangerNode node = JSON.parseObject(result, new TypeReference<PayMangerNode>() {
+                            });
                             callback.onResponse(node);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 获取导购员列表
+     *
+     * @param warehouseId
+     */
+    public static void getClerkData(String warehouseId, final HttpCallback callback) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.DAY_PAY_CLERK + warehouseId)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .get()
+                .build();
+        LogUtils.json(request.url().toString());
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 支付明细
+     *
+     * @param storeId         门店id
+     * @param createdTimeFrom 开始时间
+     * @param createdTimeTo   结束时间
+     * @param shoppingGuideId 导购id
+     * @param payType         支付方式 0赊账 1资金支付 2微信支付 3支付宝支付 4购物卡支付 5积分支付
+     */
+    public static void getPayDayDetailedList(String storeId, String createdTimeFrom, String createdTimeTo, String shoppingGuideId, String payType, final HttpCallback callback) {
+        JSONObject json = new JSONObject();
+        json.put("memberId", storeId);
+        json.put("createdTimeFrom", createdTimeFrom);
+        json.put("createdTimeTo", createdTimeTo);
+        if (!TextUtils.isEmpty(shoppingGuideId)) json.put("shoppingGuideId", shoppingGuideId);
+        if (!TextUtils.isEmpty(payType)) json.put("payType", payType);
+        json.put("orderSource", 5);// 订单来源(1-pc订单,2-h5订单,3-app,4-b2c线下,5-pos机)
+        json.put("isStoreOrder", 1);// 是否查询门店订单(0- 否, 1- 是)
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.DAY_PAY_DETAILED_LIST)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .post(requestBody)
+                .build();
+        LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                //LogUtils.json(result);//该接口返回数据太大，所以先不打印出来了
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
                     }
                 });
             }

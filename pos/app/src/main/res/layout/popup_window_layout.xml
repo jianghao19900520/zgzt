@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:orientation="vertical">
+    <com.zgzt.pos.view.MaxHeightScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/pop_bg_in"
+        android:padding="1dp"
+        app:mhv_HeightDimen="160dp">
+        <RadioGroup
+            android:id="@+id/popup_window_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+        </RadioGroup>
+    </com.zgzt.pos.view.MaxHeightScrollView>
+</LinearLayout>
+
+
+
+

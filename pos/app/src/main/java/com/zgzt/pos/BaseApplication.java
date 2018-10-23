@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.bill99.smartpos.sdk.api.BillPayment;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.ExceptionUtils.MyErrorHandler;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
@@ -19,6 +21,13 @@ import com.zgzt.pos.utils.DynamicTimeFormat;
 
 public class BaseApplication extends Application {
     public static BaseApplication mContext;
+    //glide默认配置
+    public static RequestOptions options110 = new RequestOptions().centerInside()
+            .dontAnimate()
+            .override(400, 400)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .placeholder(R.drawable.bg_1)
+            .error(R.drawable.bg_1);
 
     @Override
     protected void attachBaseContext(Context base) {

@@ -13,17 +13,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.landicorp.module.scanner.ScannerActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zgzt.pos.BaseApplication;
 import com.zgzt.pos.R;
-import com.zgzt.pos.fragment.PayMangerFragment;
 import com.zgzt.pos.node.GoodsNode;
 import com.zgzt.pos.utils.ToastUtils;
-
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
