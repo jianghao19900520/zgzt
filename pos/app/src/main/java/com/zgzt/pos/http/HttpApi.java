@@ -56,6 +56,7 @@ public class HttpApi {
                 .build();
         LogUtils.json(request.url().toString());
         LogUtils.json(requestBody.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -98,6 +99,7 @@ public class HttpApi {
                 .build();
         LogUtils.json(request.url().toString());
         LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -148,6 +150,7 @@ public class HttpApi {
                 .build();
         LogUtils.json(request.url().toString());
         LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -181,16 +184,18 @@ public class HttpApi {
 
     /**
      * 查询会员
+     *
      * @param userinput
      */
-    public static void getVipData(String userinput, final HttpCallback callback) {
+    public static void getVipData(String operatorNo, String userinput, final HttpCallback callback) {
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(UrlConfig.BASE_URL + UrlConfig.SEARCH_VIP_LIST + userinput)
+                .url(UrlConfig.BASE_URL + UrlConfig.SEARCH_VIP_LIST + operatorNo + "/" + userinput)
                 .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
                 .get()
                 .build();
         LogUtils.json(request.url().toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -205,11 +210,12 @@ public class HttpApi {
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
                 final String result = response.body().string();
-                LogUtils.json(result);
+                final String data = result.replace("null", "\"\"");
+                LogUtils.json(data);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        callback.onResponse(result);
+                        callback.onResponse(data);
                     }
                 });
             }
@@ -218,6 +224,7 @@ public class HttpApi {
 
     /**
      * 获取导购员列表
+     *
      * @param warehouseId
      */
     public static void getClerkData(String warehouseId, final HttpCallback callback) {
@@ -228,6 +235,7 @@ public class HttpApi {
                 .get()
                 .build();
         LogUtils.json(request.url().toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -280,6 +288,7 @@ public class HttpApi {
                 .build();
         LogUtils.json(request.url().toString());
         LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -307,11 +316,12 @@ public class HttpApi {
 
     /**
      * 搜索库存
+     *
      * @param pageIndex
      * @param pageSize
      * @param whId
      */
-    public static void stocksearchlist(int pageIndex, int pageSize, String whId, String searchKey, final HttpCallback callback) {
+    public static void getSearchGoodslist(int pageIndex, int pageSize, String whId, String searchKey, final HttpCallback callback) {
         JSONObject json = new JSONObject();
         json.put("pageIndex", pageIndex);
         json.put("pageSize", pageSize);
@@ -327,6 +337,7 @@ public class HttpApi {
                 .build();
         LogUtils.json(request.url().toString());
         LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
@@ -354,16 +365,17 @@ public class HttpApi {
 
     /**
      * 提交订单
-     * @param orderBelong // 1-普通订单，2-赊账订单
+     *
+     * @param orderBelong        // 1-普通订单，2-赊账订单
      * @param confirmPosProducts // pos机订单商品
-     * @param shoppingGuideId // 导购Id
-     * @param shoppingGuideName // 导购名称
-     * @param shoppingGuideId // 导购Id
-     * @param cashierId // 收银Id
-     * @param cashierName // 收银名称
-     * @param isBackFinance // 是否返资金 0-是，1-否
-     * @param isBackIntegral // 是否返积分 0-是，1-否
-     * @param memberId // 用户id
+     * @param shoppingGuideId    // 导购Id
+     * @param shoppingGuideName  // 导购名称
+     * @param shoppingGuideId    // 导购Id
+     * @param cashierId          // 收银Id
+     * @param cashierName        // 收银名称
+     * @param isBackFinance      // 是否返资金 0-是，1-否
+     * @param isBackIntegral     // 是否返积分 0-是，1-否
+     * @param memberId           // 用户id
      */
     public static void confirmorder(String orderBelong, String confirmPosProducts, String shoppingGuideId, String shoppingGuideName,
                                     String cashierId, String cashierName, String isBackFinance, String isBackIntegral, String memberId, final HttpCallback callback) {
@@ -390,6 +402,7 @@ public class HttpApi {
                 .build();
         LogUtils.json(request.url().toString());
         LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {

@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zgzt.pos.activity.SearchActivity">
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/include_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/search_input_et"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_bg_corners"
+            android:drawableLeft="@drawable/search"
+            android:drawablePadding="2.5dp"
+            android:gravity="center_vertical"
+            android:hint="请输入商品编码或名称"
+            android:lines="1"
+            android:text=""
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:maxLength="20"
+            android:paddingLeft="10dp"
+            android:textColor="#333333"
+            android:textColorHint="#999999"
+            android:textSize="13dp" />
+
+        <Button
+            android:id="@+id/search_btn"
+            android:layout_width="65dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_bg_corners"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@android:color/white"
+            android:textSize="12dp" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_99"/>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#f1f1f1"
+            android:dividerHeight="5dp"
+            tools:listitem="@layout/item_product">
+
+        </ListView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</LinearLayout>

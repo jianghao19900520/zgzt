@@ -80,6 +80,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
     private JSONArray confirmPosProducts;   // pos机订单商品
     private String shoppingGuideId;         // 导购Id
     private String shoppingGuideName;       // 导购名称
+    private String operatorNo;//当前的导购员对应的运营商号
     private String isBackFinance = "1";     // 是否返资金 0-是，1-否
     private String isBackIntegral = "1";    // 是否返积分 0-是，1-否
     private String memberId;               // 会员id
@@ -245,11 +246,12 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                         .setOnPopupWindowItemClickListener(new ShowPopupWindow.OnPopupWindowItemClickListener() {
                             @Override
                             public void onItemClick(String item, int position) {
-                                user_input_et.setText(item);
+                                shopping_guide.setText(item);
                                 try {
                                     JSONObject object = shoppingGuides.getJSONObject(position);
                                     shoppingGuideId = object.getString("id");
                                     shoppingGuideName = object.getString("name");
+                                    operatorNo = object.getString("operatorNo");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -308,9 +310,10 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
         for (int i = 0; i < len; i++) {
             JSONObject object = result.getJSONObject(i);
             if (i == 0) {
-                user_input_et.setText(object.optString("name", ""));
+                shopping_guide.setText(object.optString("name", ""));
                 shoppingGuideId = object.getString("id");
                 shoppingGuideName = object.getString("name");
+                operatorNo = object.getString("operatorNo");
             }
             guideDatas.add(object.optString("name", ""));
         }
@@ -320,14 +323,15 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
      * 获取导购员列表
      */
     private void getVipData() {
-        HttpApi.getVipData(userinput, new HttpCallback() {
+        HttpApi.getVipData(operatorNo, userinput, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
                 try {
-                    JSONObject object = new JSONObject(String.valueOf(result)).getJSONObject("result");
-                    if ("null".equals(object.toString()) || TextUtils.isEmpty(object.toString())) {
+                    String data = new JSONObject(String.valueOf(result)).getString("result");
+                    if (TextUtils.isEmpty(data)) {
                         ToastUtils.showShort(BaseApplication.mContext, "未查到用户信息");
                     } else {
+                        JSONObject object = new JSONObject(String.valueOf(result)).getJSONObject("result");
                         setDataToUser(object);
                     }
                 } catch (JSONException e) {

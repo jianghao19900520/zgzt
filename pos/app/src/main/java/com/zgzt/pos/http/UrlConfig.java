@@ -15,8 +15,8 @@ public class UrlConfig {
     public static final String TOKEN_URL = "oauth2/token";
     //登录
     public static final String LOGIN_URL = "business/services/pointofsales/pointofsaleslogin";
-    //搜索库存
-    public static final String SEARCH_VIP_LIST = "business/services/msmember/modelbyaccountid/";
+    //查询会员
+    public static final String SEARCH_VIP_LIST = "business/services/member/modelbyaccountmobile/";
     //提交订单
     public static final String CONFIR_MORDER = "business/services/order/confirmorder";
     //支付信息列表
@@ -26,7 +26,7 @@ public class UrlConfig {
     //每日支付明细列表
     public static final String DAY_PAY_DETAILED_LIST = "business/services/msorder/pliststoreorder";
     //搜索库存
-    public static final String SEARCH_STOCK_LIST = "business/services/whproductstock/stocksearchlist";
+    public static final String SEARCH_STOCK_LIST = "business/services/whproductstock/getSearchGoodslist";
 
 
 

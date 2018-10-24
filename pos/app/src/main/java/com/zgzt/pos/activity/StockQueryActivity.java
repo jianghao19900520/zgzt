@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.zgzt.pos.R;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
-import com.zgzt.pos.node.GoodsNode;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
 
@@ -121,7 +119,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void getSearchStock() {
-        HttpApi.stocksearchlist(pageIndex, Constant.PAGE_SIZE, whId, searchKey, new HttpCallback() {
+        HttpApi.getSearchGoodslist(pageIndex, Constant.PAGE_SIZE, whId, searchKey, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
                 if (pageIndex == 0) {

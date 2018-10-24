@@ -51,7 +51,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AnimAppTheme" />
         <activity android:name=".activity.DayPayActivity" />
-        <activity android:name=".activity.SearchActivity"></activity>
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.GoodsInfoActivity"></activity>
     </application>
 
 </manifest>
