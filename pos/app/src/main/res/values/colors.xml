@@ -11,4 +11,5 @@
     <color name="color_blue">#41A5F3</color>
     <color name="color_red">#d1352d</color>
     <color name="color_orange">#ff5c00</color>
+    <color name="color_red_bg">#ff5c00</color>
 </resources>

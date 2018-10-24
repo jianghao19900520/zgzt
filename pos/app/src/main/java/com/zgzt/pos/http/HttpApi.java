@@ -4,13 +4,16 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.zgzt.pos.BaseApplication;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.node.PayMangerNode;
 import com.zgzt.pos.utils.LogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -89,7 +92,11 @@ public class HttpApi {
      */
     public static void login(String pointofsalesCode, final HttpCallback callback) {
         JSONObject json = new JSONObject();
-        json.put("pointofsalesCode", pointofsalesCode);
+        try {
+            json.put("pointofsalesCode", pointofsalesCode);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
         Request request = new Request.Builder()
@@ -138,9 +145,13 @@ public class HttpApi {
      */
     public static void payList(String memberId, int statisticsType, int statisticsTimeType, final HttpCallback<PayMangerNode> callback) {
         JSONObject json = new JSONObject();
-        json.put("memberId", memberId);
-        json.put("statisticsType", statisticsType);
-        json.put("statisticsTimeType", statisticsTimeType);
+        try {
+            json.put("memberId", memberId);
+            json.put("statisticsType", statisticsType);
+            json.put("statisticsTimeType", statisticsTimeType);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
         Request request = new Request.Builder()
@@ -272,13 +283,17 @@ public class HttpApi {
      */
     public static void getPayDayDetailedList(String storeId, String createdTimeFrom, String createdTimeTo, String shoppingGuideId, String payType, final HttpCallback callback) {
         JSONObject json = new JSONObject();
-        json.put("memberId", storeId);
-        json.put("createdTimeFrom", createdTimeFrom);
-        json.put("createdTimeTo", createdTimeTo);
-        if (!TextUtils.isEmpty(shoppingGuideId)) json.put("shoppingGuideId", shoppingGuideId);
-        if (!TextUtils.isEmpty(payType)) json.put("payType", payType);
-        json.put("orderSource", 5);// 订单来源(1-pc订单,2-h5订单,3-app,4-b2c线下,5-pos机)
-        json.put("isStoreOrder", 1);// 是否查询门店订单(0- 否, 1- 是)
+        try {
+            json.put("memberId", storeId);
+            json.put("createdTimeFrom", createdTimeFrom);
+            json.put("createdTimeTo", createdTimeTo);
+            if (!TextUtils.isEmpty(shoppingGuideId)) json.put("shoppingGuideId", shoppingGuideId);
+            if (!TextUtils.isEmpty(payType)) json.put("payType", payType);
+            json.put("orderSource", 5);// 订单来源(1-pc订单,2-h5订单,3-app,4-b2c线下,5-pos机)
+            json.put("isStoreOrder", 1);// 是否查询门店订单(0- 否, 1- 是)
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
         Request request = new Request.Builder()
@@ -323,11 +338,15 @@ public class HttpApi {
      */
     public static void getSearchGoodslist(int pageIndex, int pageSize, String whId, String searchKey, final HttpCallback callback) {
         JSONObject json = new JSONObject();
-        json.put("pageIndex", pageIndex);
-        json.put("pageSize", pageSize);
-        json.put("whId", whId);
-        json.put("sortType", 1);
-        json.put("searchKey", searchKey);
+        try {
+            json.put("pageIndex", pageIndex);
+            json.put("pageSize", pageSize);
+            json.put("whId", whId);
+            json.put("sortType", 1);
+            json.put("searchKey", searchKey);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
         Request request = new Request.Builder()
@@ -376,23 +395,29 @@ public class HttpApi {
      * @param isBackFinance      // 是否返资金 0-是，1-否
      * @param isBackIntegral     // 是否返积分 0-是，1-否
      * @param memberId           // 用户id
+     * @param operatorNo           // 运营商号
      */
-    public static void confirmorder(String orderBelong, String confirmPosProducts, String shoppingGuideId, String shoppingGuideName,
-                                    String cashierId, String cashierName, String isBackFinance, String isBackIntegral, String memberId, final HttpCallback callback) {
+    public static void confirmorder(String orderBelong, JSONArray confirmPosProducts, String shoppingGuideId, String shoppingGuideName,
+                                    String cashierId, String cashierName, String isBackFinance, String isBackIntegral, String memberId, String operatorNo, final HttpCallback callback) {
         JSONObject json = new JSONObject();
-        json.put("orderSource", 5);// 订单来源(1-pc订单,2-h5订单,3-app,4-线下,5-pos机)
-        json.put("orderType", 4);// 订单类型1运营商订单2代理商3微商城线下订单4微商城订单
-        json.put("orderBelong", orderBelong);
-        json.put("orderMicroShopType", 0);// 订单微店类型 0_交易订单 1_注册购买商品订单 2_会员续费订单 3_升级订单 4_积分商城订单
-        json.put("confirmPosProducts", confirmPosProducts);
-        json.put("shoppingGuideId", shoppingGuideId);
-        json.put("shoppingGuideName", shoppingGuideName);
-        json.put("cashierId", cashierId);
-        json.put("cashierName", cashierName);
-        json.put("isBackFinance", isBackFinance);
-        json.put("isBackIntegral", isBackIntegral);
-        json.put("memberId", memberId);
-        json.put("orderDeliveryMode", 1);// 配送方式0送货上门1自取
+        try {
+            json.put("orderSource", 6);// 订单来源(1-pc订单,2-h5订单,3-app,4-线下,5-pos机, 6-新)
+            json.put("orderType", 4);// 订单类型1运营商订单2代理商3微商城线下订单4微商城订单
+            json.put("orderBelong", orderBelong);
+            json.put("orderMicroShopType", 0);// 订单微店类型 0_交易订单 1_注册购买商品订单 2_会员续费订单 3_升级订单 4_积分商城订单
+            json.put("confirmPosProducts", confirmPosProducts);
+            json.put("shoppingGuideId", shoppingGuideId);
+            json.put("shoppingGuideName", shoppingGuideName);
+            json.put("cashierId", cashierId);
+            json.put("cashierName", cashierName);
+            json.put("isBackFinance", isBackFinance);
+            json.put("isBackIntegral", isBackIntegral);
+            json.put("memberId", memberId);
+            json.put("orderDeliveryMode", 1);// 配送方式0送货上门1自取
+            json.put("code", operatorNo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
         Request request = new Request.Builder()
@@ -402,6 +427,43 @@ public class HttpApi {
                 .build();
         LogUtils.json(request.url().toString());
         LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 获取商品详情
+     */
+    public static void getGoodsInfo(String productId, String memberId, final HttpCallback callback) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.GOODS_INFO + "?productId=" + productId + "&memberId=" + memberId)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .get()
+                .build();
+        LogUtils.json(request.url().toString());
         LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override

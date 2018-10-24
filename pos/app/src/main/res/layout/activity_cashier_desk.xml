@@ -79,8 +79,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingLeft="10dp">
 
                 <TextView
@@ -95,26 +95,25 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    >
+                    android:layout_weight="1">
 
                     <CheckBox
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:text="返利"
                         android:textColor="@color/color_33"
-                        android:textSize="12dp"
-                        android:gravity="center_vertical"
-                        />
+                        android:textSize="12dp" />
+
                     <CheckBox
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:text="返利积分"
                         android:textColor="@color/color_33"
-                        android:textSize="12dp"
-                        android:gravity="center_vertical"/>
+                        android:textSize="12dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -239,12 +238,12 @@
                     android:hint="请输入会员手机号"
                     android:inputType="phone"
                     android:lines="1"
-                    android:text="15991353133"
                     android:maxLength="11"
                     android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
+                    android:text="18322912059"
                     android:textColorHint="#999999"
                     android:textSize="13dp" />
 
@@ -269,25 +268,53 @@
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp">
 
-                <TextView
-                    android:id="@+id/user_phone_tv"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="手机号："
-                    android:textColor="#333333"
-                    android:textSize="13dp" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/user_name_tv"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="会员id："
+                        android:textColor="#333333"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/user_phone_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#333333"
+                        android:textSize="13dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="姓名："
-                    android:textColor="#333333"
-                    android:textSize="13dp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="姓名："
+                        android:textColor="#333333"
+                        android:textSize="13dp" />
+
+                    <TextView
+                        android:id="@+id/user_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#333333"
+                        android:textSize="13dp" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <include layout="@layout/include_input_scan" />
@@ -307,10 +334,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#D1D1D1" />
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="none">
+
                 <LinearLayout
                     android:id="@+id/goods_item_layout"
                     android:layout_width="match_parent"

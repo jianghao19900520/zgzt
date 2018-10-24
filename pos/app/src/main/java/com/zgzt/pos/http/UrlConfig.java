@@ -26,7 +26,9 @@ public class UrlConfig {
     //每日支付明细列表
     public static final String DAY_PAY_DETAILED_LIST = "business/services/msorder/pliststoreorder";
     //搜索库存
-    public static final String SEARCH_STOCK_LIST = "business/services/whproductstock/getSearchGoodslist";
+    public static final String SEARCH_STOCK_LIST = "business/services/whproductstock/stocksearchlist";
+    //商品详情
+    public static final String GOODS_INFO = "business/services/product/detail/b2c";
 
 
 

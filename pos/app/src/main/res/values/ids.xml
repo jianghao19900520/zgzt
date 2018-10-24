@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="id_sku_checked_id" type="id"></item>
+    <item name="id_sku_checked_value" type="id"></item>
+    <item name="id_sku_checked_index" type="id"></item>
+
+    <item name="id_ck_checked_id" type="id"></item>
+    <item name="id_ck_checked_value" type="id"></item>
+    <item name="id_ck_checked_index" type="id"></item>
+</resources>

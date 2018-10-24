@@ -1,5 +1,6 @@
 package com.zgzt.pos.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,11 +24,15 @@ import com.zgzt.pos.R;
 import com.zgzt.pos.base.CommAdapter;
 import com.zgzt.pos.base.CommViewHolder;
 import com.zgzt.pos.base.Constant;
+import com.zgzt.pos.event.GoodsEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.utils.ToastUtils;
 import com.zgzt.pos.utils.Utils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +71,20 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
         initView();
         initTitle();
         initData();
+        EventBus.getDefault().register(this);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void addGoods(GoodsEvent item) {
+        finish();
+    }
+
 
     /**
      * 初始化控件
@@ -78,8 +97,10 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
         refreshLayout = findViewById(R.id.refreshLayout);
         findViewById(R.id.search_btn).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 keywords = search_input_et.getText().toString().trim();
+                InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 getSearchGoodsList();
             }
         });

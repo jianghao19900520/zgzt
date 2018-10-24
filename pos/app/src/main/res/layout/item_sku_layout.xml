@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:paddingBottom="5dp"
+    >
+    <TextView
+        android:id="@+id/item_sku_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_33"
+        android:textSize="13dp"
+        android:layout_marginLeft="10dp"
+        tools:text="颜色："/>
+    <com.qmuiteam.qmui.widget.QMUIFloatLayout
+        android:id="@+id/item_sku_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:qmui_childHorizontalSpacing="10dp"
+        app:qmui_childVerticalSpacing="10dp">
+        
+        <include layout="@layout/item_sku_value"/>
+        <include layout="@layout/item_sku_value"/>
+        <include layout="@layout/item_sku_value"/>
+
+    </com.qmuiteam.qmui.widget.QMUIFloatLayout>
+
+</LinearLayout>

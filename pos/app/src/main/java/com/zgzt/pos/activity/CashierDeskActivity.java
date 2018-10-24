@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import com.bill99.smartpos.sdk.api.model.BLCPConsumeMsg;
 import com.bill99.smartpos.sdk.api.model.BLCashConsumeMsg;
 import com.bill99.smartpos.sdk.api.model.BLPaymentRequest;
 import com.bill99.smartpos.sdk.api.model.BLScanBSCConsumeMsg;
+import com.bumptech.glide.Glide;
 import com.landicorp.module.scanner.ScannerActivity;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -29,6 +31,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.zgzt.pos.BaseApplication;
 import com.zgzt.pos.R;
 import com.zgzt.pos.base.Constant;
+import com.zgzt.pos.event.GoodsEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.utils.ArithUtils;
@@ -38,6 +41,9 @@ import com.zgzt.pos.utils.ToastUtils;
 import com.zgzt.pos.utils.Utils;
 import com.zgzt.pos.view.ShowPopupWindow;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -100,6 +106,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
         initView();
         initTitle();
         initData();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -108,6 +115,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
         if (null != showPopupWindow && showPopupWindow.isShowing()) {
             showPopupWindow.dismiss();
         }
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -170,24 +178,27 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                 clearGoods();
                 break;
             case R.id.balance_btn:
-                // 结算
-                try {
-                    if (TextUtils.isEmpty(mOrderId)) {
-                        if (goodsData.size() > 0) {
-                            balance();
+                if (TextUtils.isEmpty(user_phone_tv.getText()) || TextUtils.isEmpty(user_name_tv.getText())) {
+                    ToastUtils.showShort(BaseApplication.mContext, "请先绑定会员信息");
+                } else {
+                    // 结算
+                    try {
+                        if (TextUtils.isEmpty(mOrderId) || mOrderId.equals("null")) {
+                            if (goodsData.size() > 0) {
+                                balance();
+                            } else {
+                                ToastUtils.showShort(BaseApplication.mContext, "请先选择商品");
+                            }
                         } else {
-                            ToastUtils.showShort(BaseApplication.mContext, "请先选择商品");
+                            if (isHaikePay) {
+                                goHaiKePay();
+                            } else {
+                                goPay();
+                            }
                         }
-                    } else {
-                        if (isHaikePay) {
-                            goHaiKePay();
-                        } else {
-                            goPay();
-                        }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
                 break;
         }
@@ -350,8 +361,8 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
      * 设置会员数据
      */
     private void setDataToUser(JSONObject result) throws JSONException {
-        user_phone_tv.setText("手机号：" + result.getString("accountId"));
-        user_name_tv.setText("用户名：" + result.getString("nickName"));
+        user_phone_tv.setText("" + result.getString("accountId"));
+        user_name_tv.setText("" + result.getString("nickName"));
         memberId = result.getString("id");
     }
 
@@ -395,17 +406,21 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
             confirmPosProducts.put(item);
         }
         //提交订单
-        HttpApi.confirmorder(orderBelong, confirmPosProducts.toString(), shoppingGuideId, shoppingGuideName, PreferencesUtil.getInstance(mContext).getString(Constant.USER_ID),
-                PreferencesUtil.getInstance(mContext).getString(Constant.LOGIN_NAME), isBackFinance, isBackIntegral, memberId, new HttpCallback() {
+        HttpApi.confirmorder(orderBelong, confirmPosProducts, shoppingGuideId, shoppingGuideName, PreferencesUtil.getInstance(mContext).getString(Constant.USER_ID),
+                PreferencesUtil.getInstance(mContext).getString(Constant.LOGIN_NAME), isBackFinance, isBackIntegral, memberId, operatorNo, new HttpCallback() {
                     @Override
                     public void onResponse(Object result) {
                         try {
                             JSONObject object = new JSONObject(String.valueOf(result));
                             mOrderId = object.getString("result");
-                            if (isHaikePay) {
-                                goHaiKePay();
+                            if (TextUtils.isEmpty(mOrderId) || mOrderId.equals("null")) {
+                                ToastUtils.showShort(BaseApplication.mContext, object.getString("message"));
                             } else {
-                                goPay();
+                                if (isHaikePay) {
+                                    goHaiKePay();
+                                } else {
+                                    goPay();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -638,8 +653,8 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void clearMember() {
-        user_phone_tv.setText("手机号：");
-        user_name_tv.setText("用户名：");
+        user_phone_tv.setText("");
+        user_name_tv.setText("");
         user_input_et.setText("");
     }
 
@@ -745,6 +760,123 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void addGoods(GoodsEvent item) {
+        if (item.getAction() == 1) {
+            goodsData.add(item.getItem());
+            addGoodsItem(item.getItem());
+        } else {
+            try {
+                update(item.getItem());
+                editIndex = -1;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addGoodsItem(final JSONObject item) {
+        final View itemRoot = inflater.inflate(R.layout.item_goods, null);
+        ImageView itemImgIv = itemRoot.findViewById(R.id.item_img);                                 // 商品图片
+        TextView itemNameTv = itemRoot.findViewById(R.id.item_name);                                // 商品名称
+        TextView itemSkuTv = itemRoot.findViewById(R.id.item_sku);                                  // 商品SKU
+        TextView itemPricePayTv = itemRoot.findViewById(R.id.item_price_pay);                       // 实付款
+        TextView itemPriceTv = itemRoot.findViewById(R.id.item_price);                              // 商品价格
+        TextView itemNumTv = itemRoot.findViewById(R.id.item_num);                                  // 商品数量
+        ImageView itemEditBtn = itemRoot.findViewById(R.id.item_edit_btn);                          // 编辑按钮
+        TextView itemDelBtn = itemRoot.findViewById(R.id.item_del_btn);                             // 删除按钮
+
+        itemPriceTv.setPaintFlags(itemPriceTv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        final int index = goods_item_layout.getChildCount();
+        itemEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(CashierDeskActivity.this, GoodsInfoActivity.class);
+                    intent.putExtra("data", item.toString());
+                    intent.putExtra("price", goodsData.get(index).getString("discountPrice"));
+                    intent.putExtra("num", goodsData.get(index).getInt("purchaseNum"));
+                    intent.putExtra("action", 2);
+                    startActivity(intent);
+                    editIndex = index;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        try {
+            Glide.with(this)
+                    .applyDefaultRequestOptions(BaseApplication.options110)
+                    .load(item.getString("skuImgUrl"))
+                    .thumbnail(0.5f)
+                    .into(itemImgIv);
+            itemSkuTv.setText(item.optString("attrVal", ""));
+
+            final String itemPricePay = item.optString("discountPrice", "0.00");
+            final String itemPrice = item.optString("price", "0.00");
+            final int itemNum = item.optInt("purchaseNum", 1);
+
+            totalNum += itemNum;
+            payMoney = ArithUtils.add(payMoney, ArithUtils.mul(itemPricePay, itemNum + ""));
+            totalMoney = ArithUtils.add(totalMoney, ArithUtils.mul(itemPrice, itemNum + ""));
+            itemNameTv.setText(item.getString("productName"));
+            itemPricePayTv.setText("￥" + itemPricePay);
+            itemPriceTv.setText("￥" + itemPrice);
+            itemNumTv.setText("X" + itemNum);
+            setButtomPrice();
+
+            itemDelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goods_item_layout.removeView(itemRoot);
+                    totalNum -= itemNum;
+                    payMoney = ArithUtils.sub(payMoney, ArithUtils.mul(itemPricePay, itemNum + ""));
+                    totalMoney = ArithUtils.sub(totalMoney, ArithUtils.mul(itemPrice, itemNum + ""));
+                    goodsData.remove(item);
+                    setButtomPrice();
+                    mOrderId = "";
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mOrderId = "";
+        goods_item_layout.addView(itemRoot);
+    }
+
+    private void update(JSONObject item) throws JSONException {
+        if (editIndex > -1) {
+            JSONObject oldItem = goodsData.get(editIndex);
+
+            int oldNum = oldItem.getInt("purchaseNum");                                       // 原来的数量
+            String oldPricePay = oldItem.getString("discountPrice");                          // 原来的实付价格
+            String oldPrice = oldItem.getString("price");                                     // 原来的商品价格
+
+            int newNum = item.getInt("purchaseNum");                                          // 新的数量
+            String newPricePay = item.getString("discountPrice");                             // 新的实付价格
+            String newPrice = item.getString("price");                                        // 新的商品价格
+
+            totalNum += (newNum - oldNum);                                                         //新的总数量
+
+            payMoney = ArithUtils.add(payMoney, ArithUtils.sub(ArithUtils.mul(newPricePay, newNum + ""), ArithUtils.mul(oldPricePay, oldNum + "")));
+            totalMoney = ArithUtils.add(totalMoney, ArithUtils.sub(ArithUtils.mul(newPrice, newNum + ""), ArithUtils.mul(oldPrice, oldNum + "")));
+
+            goodsData.get(editIndex).put("purchaseNum", newNum);
+            goodsData.get(editIndex).put("price", newPrice);
+            goodsData.get(editIndex).put("discountPrice", newPricePay);
+            TextView numTv = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_num);
+            TextView itemPriceTv = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_price);
+            TextView itemPricePayTv = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_price_pay);
+            numTv.setText("X " + newNum);
+            itemPriceTv.setText("￥ " + newPrice);
+            itemPricePayTv.setText("￥ " + newPricePay);
+            setButtomPrice();
         }
     }
 
