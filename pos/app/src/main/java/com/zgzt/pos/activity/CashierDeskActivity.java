@@ -508,6 +508,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                         "com.landicorp.android.unionpay",
                         "com.landicorp.android.unionpay.MainActivity"));
                 intent.putExtra("transName", "消费");
+                intent.putExtra("orderNo", mOrderId);
                 String amout = ArithUtils.mul(payMoney, "100", 0);
                 int zeroNum = 12 - amout.length();//传递的金额一定要12位数字，不足的需要在前面补0
                 StringBuffer buffer = new StringBuffer();
@@ -560,6 +561,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                         "com.landicorp.android.unionpay",
                         "com.landicorp.android.unionpay.MainActivity"));
                 intent.putExtra("transName", "二维码支付主扫");
+                intent.putExtra("orderNo", mOrderId);
                 String amout = ArithUtils.mul(payMoney, "100", 0);
                 int zeroNum = 12 - amout.length();//传递的金额一定要12位数字，不足的需要在前面补0
                 StringBuffer buffer = new StringBuffer();
