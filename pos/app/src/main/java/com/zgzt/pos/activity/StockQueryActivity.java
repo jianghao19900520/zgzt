@@ -107,7 +107,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     public void initTitle() {
         title_text.setText("库存查询");
         title_back_btn.setVisibility(View.VISIBLE);
-        title_right_text_image.setVisibility(View.VISIBLE);
+        title_right_text_image.setVisibility(View.GONE);
     }
 
     /**
