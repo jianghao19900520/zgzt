@@ -1,5 +1,6 @@
 package com.zgzt.pos.activity;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bill99.smartpos.sdk.api.BillPayment;
 import com.bill99.smartpos.sdk.api.BillPaymentCallback;
@@ -28,7 +30,7 @@ import com.landicorp.module.scanner.ScannerActivity;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
-import com.zgzt.pos.BaseApplication;
+import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.R;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.event.GoodsEvent;
@@ -878,6 +880,37 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
             itemPricePayTv.setText("￥ " + newPricePay);
             setButtomPrice();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == HAIKE_PAY_CODE) {
+//            Bundle b = data.getExtras();
+//            Object[] lstName = b.keySet().toArray();
+//            String Str = "";
+//            for (int i = 0; i < lstName.length; i++) {
+//                String keyName = lstName[i].toString();
+//                Str = Str += "[" + keyName + "=" + String.valueOf(b.get(keyName)) + "]";
+//            }
+//            new AlertDialog.Builder(this).setMessage(Str).show();
+            String reason = data.getStringExtra("reason");
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    ToastUtils.showShort(BaseApplication.mContext, reason);
+                    initPayView();
+                    break;
+                case Activity.RESULT_CANCELED:
+                    if (reason != null) {
+                        Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
     }
 
 }
