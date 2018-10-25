@@ -373,7 +373,7 @@ public class LogUtils {
      **/
     private static void writeLogtoFile(String text) {// 新建或打开日志文件
         Date nowtime = new Date();
-        String needWriteMessage = "\n" + "--------------" + logfile.format(nowtime) + "--------------" + "\n" + text;
+        String needWriteMessage = "\n" + "--------------" + logfile.format(nowtime) + "--------------" + "\n" + text + "\n";
 
         // 取得日志存放目录
         String path = getLogPath();

@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -43,20 +44,31 @@ public class HttpApi {
      * @param password 密码
      */
     public static void getToken(String username, String password, final HttpCallback callback) {
+        FormBody.Builder builder = new FormBody.Builder();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("grant_type", "password");
+            json.put("username", username);
+            json.put("password", password);
+            json.put("client_id", "5QEYi73nj5sOwoRTQMI5RjA6kX3u9imYAu84BAHVcRR0AunXhJ9x0RCH");
+            json.put("client_secret", "zg900.COM");
+            json.put("flag", "1");
+            Iterator iterator = json.keys();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                builder.add(key, json.getString(key));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = builder.build();
         OkHttpClient okHttpClient = new OkHttpClient();
-        RequestBody requestBody = new FormBody.Builder()
-                .add("grant_type", "password")
-                .add("username", username)
-                .add("password", password)
-                .add("client_id", "5QEYi73nj5sOwoRTQMI5RjA6kX3u9imYAu84BAHVcRR0AunXhJ9x0RCH")
-                .add("client_secret", "zg900.COM")
-                .add("flag", "1")
-                .build();
         Request request = new Request.Builder()
                 .url(UrlConfig.BASE_URL + UrlConfig.TOKEN_URL)
                 .post(requestBody)
                 .build();
         LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
         LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -92,7 +104,7 @@ public class HttpApi {
         JSONObject json = new JSONObject();
         try {
             json.put("pointofsalesCode", pointofsalesCode);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -147,7 +159,7 @@ public class HttpApi {
             json.put("memberId", memberId);
             json.put("statisticsType", statisticsType);
             json.put("statisticsTimeType", statisticsTimeType);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -289,7 +301,7 @@ public class HttpApi {
             if (!TextUtils.isEmpty(payType)) json.put("payType", payType);
             json.put("orderSource", 5);// 订单来源(1-pc订单,2-h5订单,3-app,4-b2c线下,5-pos机)
             json.put("isStoreOrder", 1);// 是否查询门店订单(0- 否, 1- 是)
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -342,7 +354,7 @@ public class HttpApi {
             json.put("whId", whId);
             json.put("sortType", 1);
             json.put("searchKey", searchKey);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         OkHttpClient okHttpClient = new OkHttpClient();
@@ -393,7 +405,7 @@ public class HttpApi {
      * @param isBackFinance      // 是否返资金 0-是，1-否
      * @param isBackIntegral     // 是否返积分 0-是，1-否
      * @param memberId           // 用户id
-     * @param operatorNo           // 运营商号
+     * @param operatorNo         // 运营商号
      */
     public static void confirmorder(String orderBelong, JSONArray confirmPosProducts, String shoppingGuideId, String shoppingGuideName,
                                     String cashierId, String cashierName, String isBackFinance, String isBackIntegral, String memberId, String operatorNo, final HttpCallback callback) {
@@ -413,7 +425,7 @@ public class HttpApi {
             json.put("memberId", memberId);
             json.put("orderDeliveryMode", 1);// 配送方式0送货上门1自取
             json.put("code", operatorNo);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         OkHttpClient okHttpClient = new OkHttpClient();
