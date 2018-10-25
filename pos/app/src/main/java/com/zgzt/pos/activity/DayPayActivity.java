@@ -10,21 +10,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.zgzt.pos.BaseApplication;
 import com.zgzt.pos.R;
 import com.zgzt.pos.base.CommAdapter;
 import com.zgzt.pos.base.CommViewHolder;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
-import com.zgzt.pos.http.UrlConfig;
 import com.zgzt.pos.node.PayMangerItemNode;
-import com.zgzt.pos.node.PayMangerNode;
 import com.zgzt.pos.utils.ArithUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.TimeUtils;
-import com.zgzt.pos.utils.ToastUtils;
 import com.zgzt.pos.view.ShowPopupWindow;
 
 import org.json.JSONArray;

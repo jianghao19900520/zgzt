@@ -19,7 +19,7 @@ import com.landicorp.module.scanner.ScannerActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
-import com.zgzt.pos.BaseApplication;
+import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.R;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.http.HttpApi;

@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
-import com.zgzt.pos.BaseApplication;
+import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.R;
 import com.zgzt.pos.base.CommAdapter;
 import com.zgzt.pos.base.CommViewHolder;

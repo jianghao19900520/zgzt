@@ -5,14 +5,13 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.zgzt.pos.BaseApplication;
+import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.node.PayMangerNode;
 import com.zgzt.pos.utils.LogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;

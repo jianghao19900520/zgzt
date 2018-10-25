@@ -1,29 +1,20 @@
 package com.zgzt.pos.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITabSegment;
-import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
-import com.qmuiteam.qmui.widget.popup.QMUIPopup;
-import com.zgzt.pos.BaseApplication;
 import com.zgzt.pos.R;
 import com.zgzt.pos.fragment.PayMangerFragment;
-import com.zgzt.pos.utils.ToastUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

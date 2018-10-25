@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import com.qmuiteam.qmui.widget.QMUIFloatLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
-import com.zgzt.pos.BaseApplication;
+import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.R;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.event.GoodsEvent;

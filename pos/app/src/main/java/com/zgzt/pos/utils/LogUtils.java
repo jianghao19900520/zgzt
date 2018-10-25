@@ -5,7 +5,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.util.Log;
 
-import com.zgzt.pos.BaseApplication;
+import com.zgzt.pos.base.BaseApplication;
 
 import org.json.JSONArray;
 import org.json.JSONException;
