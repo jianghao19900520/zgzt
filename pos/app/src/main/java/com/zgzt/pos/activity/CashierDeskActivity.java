@@ -508,8 +508,17 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                         "com.landicorp.android.unionpay",
                         "com.landicorp.android.unionpay.MainActivity"));
                 intent.putExtra("transName", "消费");
-                intent.putExtra("amount", ArithUtils.mul(payMoney, "100", 0));
+                String amout = ArithUtils.mul(payMoney, "100", 0);
+                int zeroNum = 12 - amout.length();//传递的金额一定要12位数字，不足的需要在前面补0
+                StringBuffer buffer = new StringBuffer();
+                for (int i = 0; i < zeroNum; i++) {
+                    buffer.append("0");
+                }
+                buffer.append(amout);
+//                intent.putExtra("amount", buffer.toString());
+                intent.putExtra("amount", "000000000001");//测试数据
                 startActivityForResult(intent, HAIKE_PAY_CODE);
+
             } else {
                 //封装请求消息
                 BLCPConsumeMsg sdkMsg = new BLCPConsumeMsg();
@@ -550,8 +559,16 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                 intent.setComponent(new ComponentName(
                         "com.landicorp.android.unionpay",
                         "com.landicorp.android.unionpay.MainActivity"));
-                intent.putExtra("transName", "消费");
-                intent.putExtra("amount", ArithUtils.mul(payMoney, "100", 0));
+                intent.putExtra("transName", "二维码支付主扫");
+                String amout = ArithUtils.mul(payMoney, "100", 0);
+                int zeroNum = 12 - amout.length();//传递的金额一定要12位数字，不足的需要在前面补0
+                StringBuffer buffer = new StringBuffer();
+                for (int i = 0; i < zeroNum; i++) {
+                    buffer.append("0");
+                }
+                buffer.append(amout);
+//                intent.putExtra("amount", buffer.toString());
+                intent.putExtra("amount", "000000000001");//测试数据
                 startActivityForResult(intent, HAIKE_PAY_CODE);
             } else {
                 //封装请求消息
@@ -624,7 +641,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
     }
 
     /**
-     * 支付界面
+     * 打印界面
      */
     private void initPayView() {
         clearMember();
