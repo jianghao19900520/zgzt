@@ -57,7 +57,6 @@ public class HttpApi {
                 .post(requestBody)
                 .build();
         LogUtils.json(request.url().toString());
-        LogUtils.json(requestBody.toString());
         LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override

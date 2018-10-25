@@ -57,35 +57,36 @@ public class LogUtils {
 
     private static final int FILE = 0x10;
     private static final int JSON = 0x20;
-    private static final int XML  = 0x30;
+    private static final int XML = 0x30;
 
     private static ExecutorService sExecutor;
-    private static String          sDefaultDir;// log默认存储目录
-    private static String          sDir;       // log存储目录
-    private static String  sFilePrefix        = "util";// log文件前缀
-    private static boolean sLogSwitch         = true;  // log总开关，默认开
+    private static String sDefaultDir;// log默认存储目录
+    private static String sDir;       // log存储目录
+    private static String sFilePrefix = "util";// log文件前缀
+    private static boolean sLogSwitch = true;  // log总开关，默认开
     private static boolean sLog2ConsoleSwitch = true;  // logcat是否打印，默认打印
-    private static String  sGlobalTag         = null;  // log标签
-    private static boolean sTagIsSpace        = true;  // log标签是否为空白
-    private static boolean sLogHeadSwitch     = true;  // log头部开关，默认开
-    private static boolean sLog2FileSwitch    = false; // log写入文件开关，默认关
-    private static boolean sLogBorderSwitch   = true;  // log边框开关，默认开
-    private static int     sConsoleFilter     = V;     // log控制台过滤器
-    private static int     sFileFilter        = V;     // log文件过滤器
-    private static int     sStackDeep         = 1;     // log栈深度
+    private static String sGlobalTag = null;  // log标签
+    private static boolean sTagIsSpace = true;  // log标签是否为空白
+    private static boolean sLogHeadSwitch = true;  // log头部开关，默认开
+    private static boolean sLog2FileSwitch = false; // log写入文件开关，默认关
+    private static boolean sLogBorderSwitch = true;  // log边框开关，默认开
+    private static int sConsoleFilter = V;     // log控制台过滤器
+    private static int sFileFilter = V;     // log文件过滤器
+    private static int sStackDeep = 1;     // log栈深度
 
-    private static final String FILE_SEP      = System.getProperty("file.separator");
-    private static final String LINE_SEP      = System.getProperty("line.separator");
-    private static final String TOP_BORDER    = "╔═══════════════════════════════════════════════════════════════════════════════════════════════════";
-    private static final String SPLIT_BORDER  = "╟───────────────────────────────────────────────────────────────────────────────────────────────────";
-    private static final String LEFT_BORDER   = "║ ";
+    private static final String FILE_SEP = System.getProperty("file.separator");
+    private static final String LINE_SEP = System.getProperty("line.separator");
+    private static final String TOP_BORDER = "╔═══════════════════════════════════════════════════════════════════════════════════════════════════";
+    private static final String SPLIT_BORDER = "╟───────────────────────────────────────────────────────────────────────────────────────────────────";
+    private static final String LEFT_BORDER = "║ ";
     private static final String BOTTOM_BORDER = "╚═══════════════════════════════════════════════════════════════════════════════════════════════════";
-    private static final int    MAX_LEN       = 4000;
-    private static final Format FORMAT        = new SimpleDateFormat("MM-dd HH:mm:ss.SSS ", Locale.getDefault());
-    private static final String NULL_TIPS     = "Log with null object.";
-    private static final String NULL          = "null";
-    private static final String ARGS          = "args";
-    private static final Config CONFIG        = new Config();
+    private static final int MAX_LEN = 4000;
+    private static final Format FORMAT = new SimpleDateFormat("MM-dd HH:mm:ss.SSS ", Locale.getDefault());
+    private static final String NULL_TIPS = "Log with null object.";
+    private static final String NULL = "null";
+    private static final String ARGS = "args";
+    private static final Config CONFIG = new Config();
+    private static SimpleDateFormat logfile = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private LogUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -161,22 +162,25 @@ public class LogUtils {
 
     public static void json(final String contents) {
         log(JSON | D, sGlobalTag, contents);
+        writeLogtoFile(contents);
     }
 
     public static void json(@TYPE final int type, final String contents) {
         log(JSON | type, sGlobalTag, contents);
+        writeLogtoFile(contents);
     }
 
     public static void json(final String tag, final String contents) {
         log(JSON | D, tag, contents);
+        writeLogtoFile(contents);
     }
 
     public static void json(@TYPE final int type, final String tag, final String contents) {
         log(JSON | type, tag, contents);
+        writeLogtoFile(contents);
     }
 
     /**
-     *
      * @param contents
      */
     public static void xml(final String contents) {
@@ -184,7 +188,6 @@ public class LogUtils {
     }
 
     /**
-     *
      * @param type
      * @param contents
      */
@@ -365,6 +368,50 @@ public class LogUtils {
         }
     }
 
+    /**
+     * 打开日志文件并写入日志
+     **/
+    private static void writeLogtoFile(String text) {// 新建或打开日志文件
+        Date nowtime = new Date();
+        String needWriteMessage = "\n" + "--------------" + logfile.format(nowtime) + "--------------" + "\n" + text;
+
+        // 取得日志存放目录
+        String path = getLogPath();
+        if (path != null && !"".equals(path)) {
+            try {
+                // 创建目录
+                File dir = new File(path);
+                if (!dir.exists())
+                    dir.mkdir();
+                // 打开文件
+                File file = new File(path + File.separator + "MyPosLog.txt");
+                FileWriter filerWriter = new FileWriter(file, true);// 后面这个参数代表是不是要接上文件中原来的数据，不进行覆盖
+                BufferedWriter bufWriter = new BufferedWriter(filerWriter);
+                bufWriter.write(needWriteMessage);
+                bufWriter.newLine();
+                bufWriter.close();
+                filerWriter.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static String getLogPath() {
+        String path = "";
+        // 获取扩展SD卡设备状态
+        String sDStateString = android.os.Environment.getExternalStorageState();
+        // 拥有可读可写权限
+        if (sDStateString.equals(android.os.Environment.MEDIA_MOUNTED)) {
+            // 获取扩展存储设备的文件目录
+            File SDFile = android.os.Environment.getExternalStorageDirectory();
+            path = SDFile.getAbsolutePath() + File.separator;
+        }
+        return path;
+
+    }
+
     private static void print2File(final int type, final String tag, final String msg) {
         Date now = new Date(System.currentTimeMillis());
         String format = FORMAT.format(now);
@@ -538,9 +585,9 @@ public class LogUtils {
     }
 
     private static class TagHead {
-        String   tag;
+        String tag;
         String[] consoleHead;
-        String   fileHead;
+        String fileHead;
 
         TagHead(String tag, String[] consoleHead, String fileHead) {
             this.tag = tag;
