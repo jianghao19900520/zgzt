@@ -1,9 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zgzt.pos.activity.GoodsAllocationActivity">
+    android:orientation="vertical">
+    <include layout="@layout/include_title"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <com.zgzt.pos.view.ScaleRelativeLayout
+            android:id="@+id/add_stock_btn"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="#F8AF3C">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true">
+                <ImageView
+                    android:layout_width="41dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/newlyadded"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:text="新增调拨单"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="18dp"/>
+            </LinearLayout>
+        </com.zgzt.pos.view.ScaleRelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+
+            <com.zgzt.pos.view.ScaleRelativeLayout
+                android:id="@+id/in_stock_btn"
+                android:layout_width="167dp"
+                android:layout_height="120dp"
+                android:clickable="true"
+                android:background="#91CA47">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_centerInParent="true">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/storage"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="调拨入库单"
+                        android:textSize="15dp"
+                        android:layout_marginTop="15dp"/>
+                </LinearLayout>
+            </com.zgzt.pos.view.ScaleRelativeLayout>
+            <com.zgzt.pos.view.ScaleRelativeLayout
+                android:id="@+id/out_stock_btn"
+                android:layout_width="167dp"
+                android:layout_height="120dp"
+                android:background="#E67456"
+                android:clickable="true"
+                android:layout_marginLeft="6dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_centerInParent="true">
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/thelibrary"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="调拨出库单"
+                        android:textSize="15dp"
+                        android:layout_marginTop="15dp"/>
+                </LinearLayout>
+            </com.zgzt.pos.view.ScaleRelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -201,10 +201,10 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
     }
 
     /**
-     * 获取搜索列表
+     * 商品搜索
      */
     private void getSearchGoodsList() {
-        HttpApi.getSearchGoodslist(pageIndex, Constant.PAGE_SIZE, whId, keywords, new HttpCallback() {
+        HttpApi.searchGood(pageIndex, Constant.PAGE_SIZE, whId, keywords, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
                 if (pageIndex == 0) {

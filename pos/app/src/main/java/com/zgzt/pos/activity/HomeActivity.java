@@ -134,7 +134,7 @@ public class HomeActivity extends AppCompatActivity implements ScaleRelativeLayo
                 intent = new Intent(this,StockQueryActivity.class);
                 break;
             case R.id.goods_allocation_btn:
-//                intent = new Intent(this, AllocationActivity.class);
+                intent = new Intent(this, GoodsAllocationActivity.class);
                 break;
         }
         if (null != intent) {

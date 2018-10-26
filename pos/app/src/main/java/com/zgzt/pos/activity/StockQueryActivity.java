@@ -118,8 +118,11 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         whName = PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_NAME);
     }
 
+    /**
+     * 商品搜索
+     */
     private void getSearchStock() {
-        HttpApi.getSearchGoodslist(pageIndex, Constant.PAGE_SIZE, whId, searchKey, new HttpCallback() {
+        HttpApi.searchGood(pageIndex, Constant.PAGE_SIZE, whId, searchKey, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
                 if (pageIndex == 0) {

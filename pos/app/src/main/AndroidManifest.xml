@@ -52,7 +52,9 @@
             android:theme="@style/AnimAppTheme" />
         <activity android:name=".activity.DayPayActivity" />
         <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.GoodsInfoActivity"></activity>
+        <activity android:name=".activity.GoodsInfoActivity" />
+        <activity android:name=".activity.AddNewAllotActivity" />
+        <activity android:name=".activity.StockAllotActivity"></activity>
     </application>
 
 </manifest>

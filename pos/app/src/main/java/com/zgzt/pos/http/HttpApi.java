@@ -340,13 +340,13 @@ public class HttpApi {
     }
 
     /**
-     * 搜索库存
+     * 商品搜索
      *
      * @param pageIndex
      * @param pageSize
      * @param whId
      */
-    public static void getSearchGoodslist(int pageIndex, int pageSize, String whId, String searchKey, final HttpCallback callback) {
+    public static void searchGood(int pageIndex, int pageSize, String whId, String searchKey, final HttpCallback callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("pageIndex", pageIndex);
@@ -360,7 +360,7 @@ public class HttpApi {
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
         Request request = new Request.Builder()
-                .url(UrlConfig.BASE_URL + UrlConfig.SEARCH_STOCK_LIST)
+                .url(UrlConfig.BASE_URL + UrlConfig.SEARCH_GOODS)
                 .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
                 .post(requestBody)
                 .build();
