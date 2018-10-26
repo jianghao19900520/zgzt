@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,15 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.R;
 import com.zgzt.pos.base.Constant;
+import com.zgzt.pos.event.WarehouseEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +56,9 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     private LayoutInflater inflater;
 
     private String searchKey;
-    private List<JSONObject> listData;
+    private List<JSONObject> listData;//获取到的数据
+    private List<String> productIdList;//筛选条件
+    private List<JSONObject> showListData;//筛选后显示的数据
     private StockQueryAdapter adapter;
     private int pageIndex = 0;
     private String whId;
@@ -66,6 +73,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         initView();
         initTitle();
         initData();
+        EventBus.getDefault().register(this);
     }
 
     /**
@@ -84,6 +92,8 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         list_view = findViewById(R.id.list_view);
         adapter = new StockQueryAdapter();
         listData = new ArrayList<>();
+        showListData = new ArrayList<>();
+        productIdList = new ArrayList<>();
         list_view.setAdapter(adapter);
         smart_refresh_layout.setEnableLoadmore(false);
         smart_refresh_layout.setOnRefreshLoadmoreListener(this);
@@ -107,7 +117,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     public void initTitle() {
         title_text.setText("库存查询");
         title_back_btn.setVisibility(View.VISIBLE);
-        title_right_text_image.setVisibility(View.GONE);
+        title_right_text_image.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -162,12 +172,14 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         }
         if (pageIndex == 0) {
             listData.clear();
+            showListData.clear();
         }
         JSONArray list = result.getJSONArray("list");
         int len = list.length();
         for (int i = 0; i < len; i++) {
             listData.add(list.getJSONObject(i));
         }
+        showListData = listData;
         adapter.notifyDataSetChanged();
     }
 
@@ -199,12 +211,12 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
 
         @Override
         public int getCount() {
-            return listData.size();
+            return showListData.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return listData.get(position);
+            return showListData.get(position);
         }
 
         @Override
@@ -277,4 +289,21 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshWarehouse(WarehouseEvent item) {
+        whId = item.getWhId();
+        whName = item.getWhName();
+        pageIndex = 0;
+        if (!TextUtils.isEmpty(code_input_et.getText().toString().trim())) {
+            getSearchStock();
+        }
+    }
+
 }

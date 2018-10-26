@@ -500,4 +500,278 @@ public class HttpApi {
         });
     }
 
+    /**
+     * 获取商品详情
+     */
+    public static void getSearchStockList(int pageIndex, int pageSize, final HttpCallback callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("pageIndex", pageIndex);
+            json.put("pageSize", pageSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.SEARCH_STOCK_LIST)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .post(requestBody)
+                .build();
+        LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 提交新增调拨单
+     */
+    public static void confirmwhreq(JSONArray inRequisitionLineList, String remark, String reqTime, String reqWhFrom, String reqWhFromName, String reqWhTo, String reqWhToName, final HttpCallback callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("inRequisitionLineList", inRequisitionLineList);
+            json.put("remark", remark);
+            json.put("reqTime", reqTime);
+            json.put("reqWhFrom", reqWhFrom);
+            json.put("reqWhFromName", reqWhFromName);
+            json.put("reqWhTo", reqWhTo);
+            json.put("reqWhToName", reqWhToName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.CONFIRM_WHREQ)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .post(requestBody)
+                .build();
+        LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 获取入库单信息
+     */
+    public static void getStockInBillInfo(String mId, final HttpCallback callback) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.STOCK_IN_BILL_INFO + mId)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .get()
+                .build();
+        LogUtils.json(request.url().toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 获取入库单商品信息
+     */
+    public static void getStockInGoodsInfo(int pageIndex, int pageSize, String reqId, final HttpCallback callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("pageIndex", pageIndex);
+            json.put("pageSize", pageSize);
+            json.put("reqId", reqId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.STOCK_IN_GOODS_INFO)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .post(requestBody)
+                .build();
+        LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 确认收货
+     */
+    public static void confirmCollectGoods(JSONArray reqIds, int type, final HttpCallback callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("reqIds", reqIds);
+            json.put("type", type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.CONFIRM_COLLECT_GOODS)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .post(requestBody)
+                .build();
+        LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * plistbyWhreq
+     */
+    public static void plistbyWhreq(int pageIndex, int pageSize, int type, final HttpCallback callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("pageIndex", pageIndex);
+            json.put("pageSize", pageSize);
+            json.put("type", type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+        Request request = new Request.Builder()
+                .url(UrlConfig.BASE_URL + UrlConfig.PLISTBY_WHREQ)
+                .addHeader("token", PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN))
+                .post(requestBody)
+                .build();
+        LogUtils.json(request.url().toString());
+        LogUtils.json(json.toString());
+        LogUtils.d("token-->" + PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.TOKEN));
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(e);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                final String result = response.body().string();
+                LogUtils.json(result);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onResponse(result);
+                    }
+                });
+            }
+        });
+    }
+
 }

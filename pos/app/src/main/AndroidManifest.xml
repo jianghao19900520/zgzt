@@ -54,7 +54,9 @@
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.GoodsInfoActivity" />
         <activity android:name=".activity.AddNewAllotActivity" />
-        <activity android:name=".activity.StockAllotActivity"></activity>
+        <activity android:name=".activity.StockAllotActivity" />
+        <activity android:name=".activity.InStockDetailsActivity" />
+        <activity android:name=".activity.OutStockDetailsActivity"></activity>
     </application>
 
 </manifest>

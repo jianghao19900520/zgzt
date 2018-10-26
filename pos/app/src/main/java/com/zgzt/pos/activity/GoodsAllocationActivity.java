@@ -14,7 +14,7 @@ import com.zgzt.pos.view.ScaleRelativeLayout;
 /**
  * 商品调拨页面
  */
-public class GoodsAllocationActivity extends AppCompatActivity implements View.OnClickListener {
+public class GoodsAllocationActivity extends AppCompatActivity implements ScaleRelativeLayout.OnClickListener {
 
     private Context mContext;
     ImageView title_back_btn;

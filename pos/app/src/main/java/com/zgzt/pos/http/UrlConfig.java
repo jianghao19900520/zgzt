@@ -31,6 +31,16 @@ public class UrlConfig {
     public static final String GOODS_INFO = "business/services/product/detail/b2c";
     //查询仓库列表
     public static final String SEARCH_STOCK_LIST = "business/services/warehouse/plistby";
+    //提交调拨单
+    public static final String CONFIRM_WHREQ = "business/services/whrequisition/confirmwhreq";
+    //PLISTBY_WHREQ
+    public static final String PLISTBY_WHREQ = "business/services/whrequisition/plistby";
+    //获取入库单信息
+    public static final String STOCK_IN_BILL_INFO = "business/services/whrequisition/model/";
+    //获取入库单商品信息
+    public static final String STOCK_IN_GOODS_INFO = "business/services/whrequisitionline/plistwhreqline";
+    //确认收货
+    public static final String CONFIRM_COLLECT_GOODS = "business/services/whrequisition/updatewhreq";
 
 
 
