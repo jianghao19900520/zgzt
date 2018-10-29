@@ -12,12 +12,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.landicorp.module.scanner.ScannerActivity;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.zgzt.pos.R;
 import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.base.Constant;
+import com.zgzt.pos.event.GoodsEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.node.PayMangerNode;
@@ -27,6 +29,9 @@ import com.zgzt.pos.utils.ToastUtils;
 import com.zgzt.pos.view.ShowPopupWindow;
 import com.zgzt.pos.view.TimeSelector;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,6 +80,29 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
         initView();
         initTitle();
         initData();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void addGoods(GoodsEvent item) {
+        int action = item.getAction();
+        if (action == 1) {
+            goodsData.add(item.getItem());
+            addGoodsItem(item.getItem());
+        } else if (action == 2) {
+            try {
+                update(item.getItem().getString("purchaseNum"));
+                editIndex = -1;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initView() {
@@ -91,6 +119,7 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
         call_out_name_extend_btn = findViewById(R.id.call_out_name_extend_btn);
         title_right_text.setOnClickListener(this);
         call_out_name_extend_btn.setOnClickListener(this);
+        code_input_et.setOnClickListener(this);
         findViewById(R.id.bills_date_extend_btn).setOnClickListener(this);
         findViewById(R.id.scan_btn).setOnClickListener(this);
     }
@@ -207,9 +236,9 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
                 Intent intent = new Intent(this, SearchActivity.class);
                 intent.putExtra("type", "search");
                 intent.putExtra("what", "DiaoBo");
-                intent.putExtra("whId", outWarehouse.getString("id"));
+                intent.putExtra("whId", PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_ID));
                 startActivity(intent);
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -297,12 +326,12 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
                 data.put("classId", item.getString("classId"));
                 data.put("packId", item.getString("packId"));
                 data.put("productCid", item.getString("productCid"));
-                data.put("productCode", item.getJSONObject("proProduct").getString("productCode"));
-                data.put("productName", item.getJSONObject("proProduct").getString("productName"));
+                data.put("productCode", item.getString("productCode"));
+                data.put("productName", item.getString("productName"));
                 data.put("remark", remark);
                 data.put("skuId", item.getString("skuId"));
-                data.put("skuCode", item.getJSONObject("proSku").getString("skuCode"));
-                data.put("skuQty", item.getString("num"));
+                data.put("skuCode", item.getString("skuCode"));
+                data.put("skuQty", item.getString("purchaseNum"));
                 inRequisitionLineList.put(data);
             }
             confirmwhreq();
@@ -343,6 +372,84 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void update(String purchaseNum) throws JSONException {
+        if (editIndex > -1) {
+            goodsData.get(editIndex).put("purchaseNum", purchaseNum);
+            TextView numTv = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_num);
+            numTv.setText("X " + purchaseNum);
+        }
+    }
+
+    private void addGoodsItem(final JSONObject item) {
+        final View itemRoot = inflater.inflate(R.layout.item_goods, null);
+        ImageView itemImgIv = itemRoot.findViewById(R.id.item_img);          // 商品图片
+        TextView itemNameTv = itemRoot.findViewById(R.id.item_name);         // 商品名称
+        TextView itemSkuTv = itemRoot.findViewById(R.id.item_sku);           // 商品SKU
+        TextView itemPricePayTv = itemRoot.findViewById(R.id.item_price_pay);// 实付款
+        TextView itemPriceTv = itemRoot.findViewById(R.id.item_price);       // 商品价格
+        TextView itemNumTv = itemRoot.findViewById(R.id.item_num);           // 商品数量
+        ImageView itemEditBtn = itemRoot.findViewById(R.id.item_edit_btn);    // 编辑按钮
+        TextView itemDelBtn = itemRoot.findViewById(R.id.item_del_btn);      // 删除按钮
+        itemPriceTv.setVisibility(View.GONE);
+        itemPricePayTv.setVisibility(View.GONE);
+        final int itemNum = item.optInt("purchaseNum", 1);//商品件数
+        final int index = goods_item_layout.getChildCount();
+        try {
+            goodsData.get(index).put("purchaseNum", itemNum);
+            goodsData.get(index).put("productId", item.optString("productId"));
+            goodsData.get(index).put("brandId", item.optString("brandId"));
+            goodsData.get(index).put("classId", item.optString("classId"));
+            goodsData.get(index).put("packId", item.optString("packId"));
+            goodsData.get(index).put("productCid", item.optString("productCid"));
+            goodsData.get(index).put("productCode", item.optString("productCode"));
+            goodsData.get(index).put("productName", item.optString("productName"));
+            goodsData.get(index).put("skuId", item.optString("skuId"));
+            goodsData.get(index).put("skuCode", item.optString("skuCode"));
+            goodsData.get(index).put("skuQty", item.optString("purchaseNum"));
+            goodsData.get(index).put("remark", remark);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        itemEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(AddNewAllotActivity.this, GoodsInfoActivity.class);
+                    intent.putExtra("data", item.toString());
+                    intent.putExtra("num", goodsData.get(index).getInt("purchaseNum"));
+                    intent.putExtra("action", 2);
+                    startActivity(intent);
+                    editIndex = index;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        try {
+            Glide.with(this)
+                    .applyDefaultRequestOptions(BaseApplication.options110)
+                    .load(item.getString("skuImgUrl"))
+                    .thumbnail(0.5f)
+                    .into(itemImgIv);
+            itemSkuTv.setText(item.getString("property"));
+            itemNameTv.setText(item.getString("productName"));
+            itemNumTv.setText("X" + itemNum);
+
+            itemDelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goods_item_layout.removeView(itemRoot);
+                    goodsData.remove(item);
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        goods_item_layout.addView(itemRoot);
     }
 
 }

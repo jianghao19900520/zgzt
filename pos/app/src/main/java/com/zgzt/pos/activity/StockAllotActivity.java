@@ -20,6 +20,7 @@ import com.zgzt.pos.base.CommViewHolder;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
+import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
 
 import org.json.JSONArray;
@@ -159,7 +160,8 @@ public class StockAllotActivity extends AppCompatActivity implements OnRefreshLo
             // 调拨入库
             stockType = 1;
         }
-        HttpApi.plistbyWhreq(pageIndex, Constant.PAGE_SIZE, stockType, new HttpCallback() {
+        String userId = PreferencesUtil.getInstance(mContext).getString(Constant.USER_ID);
+        HttpApi.plistbyWhreq(userId, pageIndex, Constant.PAGE_SIZE, stockType, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
                 try {

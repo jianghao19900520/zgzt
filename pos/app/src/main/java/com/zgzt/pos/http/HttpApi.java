@@ -682,13 +682,15 @@ public class HttpApi {
     }
 
     /**
-     * 确认收货
+     * 确认收货/发货
      */
-    public static void confirmCollectGoods(JSONArray reqIds, int type, final HttpCallback callback) {
+    public static void confirmGoods(JSONArray reqIds, int type, int logisticsCode, int logisticsCompany, final HttpCallback callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("reqIds", reqIds);
             json.put("type", type);
+            json.put("logisticsCode", logisticsCode);
+            json.put("logisticsCompany", logisticsCompany);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -730,9 +732,10 @@ public class HttpApi {
     /**
      * plistbyWhreq
      */
-    public static void plistbyWhreq(int pageIndex, int pageSize, int type, final HttpCallback callback) {
+    public static void plistbyWhreq(String userId, int pageIndex, int pageSize, int type, final HttpCallback callback) {
         JSONObject json = new JSONObject();
         try {
+            json.put("userId", userId);
             json.put("pageIndex", pageIndex);
             json.put("pageSize", pageSize);
             json.put("type", type);
