@@ -26,6 +26,7 @@ import com.bill99.smartpos.sdk.api.model.BLCashConsumeMsg;
 import com.bill99.smartpos.sdk.api.model.BLPaymentRequest;
 import com.bill99.smartpos.sdk.api.model.BLScanBSCConsumeMsg;
 import com.bumptech.glide.Glide;
+import com.landicorp.android.eptapi.DeviceService;
 import com.landicorp.module.scanner.ScannerActivity;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -469,6 +470,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
      * 海科支付
      */
     private void goHaiKePay() {
+        DeviceService.logout();
         View payHeaderView = inflater.inflate(R.layout.pay_header, null);
         final QMUIBottomSheet qmuiBottomSheet = new QMUIBottomSheet
                 .BottomListSheetBuilder(this, false)
@@ -751,6 +753,14 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                     "实    付：￥" + payMoney + "\n" + yhje
             );
 
+            //广告区域
+            JSONObject ad = new JSONObject();
+            ad.put("content‐type", "txt");
+            ad.put("size", 3);
+            ad.put("content", "这里是广告区域\r");
+            ad.put("position", "center");
+            ad.put("bold", "1");
+
             //小票底部空白
             JSONObject blank = new JSONObject();
             blank.put("content‐type", "txt");
@@ -759,6 +769,8 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
 
             spos.put(line);
             spos.put(buttom);
+            spos.put(line);
+            spos.put(ad);
             spos.put(blank);
 
             printData.put("spos", spos);
