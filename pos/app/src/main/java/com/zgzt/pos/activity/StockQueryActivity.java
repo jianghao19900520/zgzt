@@ -301,9 +301,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         whId = item.getWhId();
         whName = item.getWhName();
         pageIndex = 0;
-        if (!TextUtils.isEmpty(code_input_et.getText().toString().trim())) {
-            getSearchStock();
-        }
+        getSearchStock();
     }
 
 }

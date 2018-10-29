@@ -118,13 +118,13 @@ public class StockFilterActivity extends AppCompatActivity implements View.OnCli
             valueTv.setText(item.getString("whName"));
 
             final int index = i;
-            if (whId.equals(item.getString("id"))){
-                warehouse_layout.setTag(R.id.id_ck_checked_id,item.getString("id"));
-                warehouse_layout.setTag(R.id.id_ck_checked_index,i);
-                warehouse_layout.setTag(R.id.id_ck_checked_value,item.getString("whName"));
-                valueTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.sku_bg_checked));
-                valueTv.setTextColor(getResources().getColor(R.color.white));
-            }
+//            if (whId.equals(item.getString("id"))){
+//                warehouse_layout.setTag(R.id.id_ck_checked_id,item.getString("id"));
+//                warehouse_layout.setTag(R.id.id_ck_checked_index,i);
+//                warehouse_layout.setTag(R.id.id_ck_checked_value,item.getString("whName"));
+//                valueTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.sku_bg_checked));
+//                valueTv.setTextColor(getResources().getColor(R.color.white));
+//            }
 
             valueTv.setOnClickListener(new View.OnClickListener() {
                 @Override

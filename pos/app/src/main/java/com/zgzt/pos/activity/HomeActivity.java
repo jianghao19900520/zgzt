@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity implements ScaleRelativeLayo
      */
     private void initTitle(){
         title_text.setText(getString(R.string.app_name));
-        title_right_image.setVisibility(View.VISIBLE);
+        title_right_image.setVisibility(View.GONE);
         title_right_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

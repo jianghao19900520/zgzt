@@ -753,12 +753,12 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
             );
 
             //广告区域
-            JSONObject ad = new JSONObject();
-            ad.put("content‐type", "txt");
-            ad.put("size", 3);
-            ad.put("content", "这里是广告区域\r");
-            ad.put("position", "center");
-            ad.put("bold", "1");
+//            JSONObject ad = new JSONObject();
+//            ad.put("content‐type", "txt");
+//            ad.put("size", 3);
+//            ad.put("content", "这里是广告区域\r");
+//            ad.put("position", "center");
+//            ad.put("bold", "1");
 
             //小票底部空白
             JSONObject blank = new JSONObject();
@@ -768,8 +768,8 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
 
             spos.put(line);
             spos.put(buttom);
-            spos.put(line);
-            spos.put(ad);
+//            spos.put(line);
+//            spos.put(ad);
             spos.put(blank);
 
             printData.put("spos", spos);

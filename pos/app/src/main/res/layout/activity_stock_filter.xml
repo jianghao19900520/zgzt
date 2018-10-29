@@ -112,13 +112,13 @@
                         android:text="全部仓库"/>
                     <RelativeLayout
                         android:layout_width="50dp"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:src="@drawable/arrow_top">
                         <ImageView
                             android:id="@+id/warehouse_img"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/arrow_top"/>
+                            android:layout_centerInParent="true"/>
                     </RelativeLayout>
                 </LinearLayout>
                 <com.qmuiteam.qmui.widget.QMUIFloatLayout
