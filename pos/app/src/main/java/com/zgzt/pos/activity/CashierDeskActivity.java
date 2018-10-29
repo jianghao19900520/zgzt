@@ -470,7 +470,6 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
      * 海科支付
      */
     private void goHaiKePay() {
-        DeviceService.logout();
         View payHeaderView = inflater.inflate(R.layout.pay_header, null);
         final QMUIBottomSheet qmuiBottomSheet = new QMUIBottomSheet
                 .BottomListSheetBuilder(this, false)

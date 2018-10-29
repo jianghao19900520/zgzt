@@ -8,6 +8,7 @@ import com.bill99.smartpos.sdk.api.BillPayment;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.ExceptionUtils.MyErrorHandler;
+import com.landicorp.android.eptapi.DeviceService;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreater;
@@ -59,6 +60,7 @@ public class BaseApplication extends Application {
      * 初始化支付SDK
      */
     private void initPaySDK() {
+//        DeviceService.logout();
         //设置支付SDK调试模式，建议开发版本设为true, 发布版本设为false。默认为false
         BillPayment.startUp(this, "sandbox");
         BillPayment.setDebugMode(false);
