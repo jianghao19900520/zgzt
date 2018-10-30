@@ -26,11 +26,11 @@ import com.bill99.smartpos.sdk.api.model.BLCashConsumeMsg;
 import com.bill99.smartpos.sdk.api.model.BLPaymentRequest;
 import com.bill99.smartpos.sdk.api.model.BLScanBSCConsumeMsg;
 import com.bumptech.glide.Glide;
-import com.landicorp.android.eptapi.DeviceService;
 import com.landicorp.module.scanner.ScannerActivity;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.zgzt.pos.utils.PrinterStep;
 import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.R;
 import com.zgzt.pos.base.Constant;
@@ -689,115 +689,27 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
      * 构造打印数据，调起打印
      */
     private void doPrint(List<JSONObject> goodsData, String mOrderId, String totalMoney, String payMoney, int totalNum) {
-        try {
-            JSONObject printData = new JSONObject();
-            JSONArray spos = new JSONArray();
+        PrinterStep step = new PrinterStep();
+        step.init();
 
-            JSONObject title = new JSONObject();
-            title.put("content‐type", "txt");
-            title.put("size", 3);
-            title.put("content", "信赢名流购物清单\r");
-            title.put("position", "center");
-            title.put("bold", "1");
+        step.addText(true, " 信赢名流购物清单" + "\n");
+        step.addText(true, "\n");
 
-            String[] dates = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd HH:mm")).split(" ");
+        String[] dates = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd HH:mm")).split(" ");
+        step.addText(false, " 日  期：" + dates[0] + "  时间：" + dates[1] + "\n");
+        step.addText(false, " 订单号：" + mOrderId + "\n");
+        step.addText(false, " 收  银：" + PreferencesUtil.getInstance(mContext).getString(Constant.LOGIN_NAME) + "\n");
 
-            JSONObject titleContent = new JSONObject();
-            titleContent.put("content‐type", "txt");
-            titleContent.put("size", 2);
-            titleContent.put("content", "日  期：" + dates[0] +
-                    "  时间：" + dates[1] +
-                    "\n订单号：" + mOrderId +
-                    "\n收  银：" + PreferencesUtil.getInstance(mContext).getString(Constant.LOGIN_NAME) + "\n");
+        step.addText(true, "\n");
 
-            JSONObject line = new JSONObject();
-            line.put("content‐type", "txt");
-            line.put("size", 2);
-            line.put("content", "--------------------------------\r");
+        step.addText(false, " 数量小计：" + totalNum + "\n");
+        step.addText(false, " 总 价 格：￥" + totalMoney + "\n");
+        step.addText(false, " 实    付：￥" + payMoney + "\n");
 
-            JSONObject newLine = new JSONObject();
-            newLine.put("content‐type", "txt");
-            newLine.put("size", 2);
-            newLine.put("content", "\r");
-
-            spos.put(title);
-            spos.put(newLine);
-            spos.put(titleContent);
-            spos.put(line);
-
-            int len = goodsData.size();
-            for (int i = 0; i < len; i++) {
-                JSONObject item = goodsData.get(i);
-                // 商品内容
-                JSONObject content = new JSONObject();
-                content.put("content‐type", "txt");
-                content.put("size", 2);
-                String price = item.getString("price");
-                String discountPrice = item.getString("discountPrice");
-                String discount = ArithUtils.compareTo(price, discountPrice) == 0 ? "" : "\n优 惠 价：￥" + item.getString("discountPrice");
-                content.put("content", "商品名称：" + item.getString("productName") +
-                        "\n商品规格：" + item.getString("attrVal") +
-                        "\n零 售 价：￥" + price +
-                        discount +
-                        "\n数    量：* " + item.getString("purchaseNum") +
-                        "\n金    额：￥" + ArithUtils.mul(item.getString("discountPrice"), item.getString("purchaseNum")) + "\n\r");
-                content.put("position", "left");
-                spos.put(content);
-            }
-
-            //小票底部汇总价格
-            JSONObject buttom = new JSONObject();
-            buttom.put("content‐type", "txt");
-            buttom.put("size", 2);
-
-            String yhje = ArithUtils.compareTo(ArithUtils.sub(totalMoney, payMoney), "0") == 0 ? "" : "优惠金额：-￥" + ArithUtils.sub(totalMoney, payMoney) + "\n";
-
-            buttom.put("content", "数量小计：" + totalNum + "\n" +
-                    "总 价 格：￥" + totalMoney + "\n" +
-                    "实    付：￥" + payMoney + "\n" + yhje
-            );
-
-            //广告区域
-//            JSONObject ad = new JSONObject();
-//            ad.put("content‐type", "txt");
-//            ad.put("size", 3);
-//            ad.put("content", "这里是广告区域\r");
-//            ad.put("position", "center");
-//            ad.put("bold", "1");
-
-            //小票底部空白
-            JSONObject blank = new JSONObject();
-            blank.put("content‐type", "txt");
-            blank.put("size", 2);
-            blank.put("content", "\n\n\n\n\r");
-
-            spos.put(line);
-            spos.put(buttom);
-//            spos.put(line);
-//            spos.put(ad);
-            spos.put(blank);
-
-            printData.put("spos", spos);
-
-            BillPayment.print(this, printData, null, new BillPaymentCallback() {
-                @Override
-                public void onSuccess(String successData) {
-                }
-
-                @Override
-                public void onFailed(String failedData) {
-                    ToastUtils.showShort(BaseApplication.mContext, failedData);
-                }
-
-                @Override
-                public void onCancel(String cancelData) {
-                    ToastUtils.showShort(BaseApplication.mContext, cancelData);
-                }
-            });
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        step.addText(true, "\n");
+        step.addText(true, "\n");
+        step.addText(true, "\n");
+        step.startStepPrint();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
