@@ -526,19 +526,19 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
         PrinterStep step = new PrinterStep();
         step.init();
 
-        step.addText(true, " 信赢名流购物清单" + "\n");
+        step.addText(true, "信赢名流购物清单" + "\n");
         step.addText(true, "\n");
 
         String[] dates = TimeUtils.getNowString(new SimpleDateFormat("yyyy-MM-dd HH:mm")).split(" ");
-        step.addText(false, " 日  期：" + dates[0] + "  时间：" + dates[1] + "\n");
-        step.addText(false, " 订单号：" + mOrderId + "\n");
-        step.addText(false, " 收  银：" + PreferencesUtil.getInstance(mContext).getString(Constant.LOGIN_NAME) + "\n");
+        step.addText(false, "日  期：" + dates[0] + "  时间：" + dates[1] + "\n");
+        step.addText(false, "订单号：" + mOrderId + "\n");
+        step.addText(false, "收  银：" + PreferencesUtil.getInstance(mContext).getString(Constant.LOGIN_NAME) + "\n");
 
         step.addText(true, "\n");
 
-        step.addText(false, " 数量小计：" + totalNum + "\n");
-        step.addText(false, " 总 价 格：￥" + totalMoney + "\n");
-        step.addText(false, " 实    付：￥" + payMoney + "\n");
+        step.addText(false, "数量小计：" + totalNum + "\n");
+        step.addText(false, "总 价 格：￥" + totalMoney + "\n");
+        step.addText(false, "实    付：￥" + payMoney + "\n");
 
         step.addText(true, "\n");
         step.addText(true, "\n");
