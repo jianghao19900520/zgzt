@@ -10,6 +10,9 @@ android {
         versionName "2.5.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        ndk {
+            abiFilters 'armeabi'
+        }
     }
     buildTypes {
         release {
@@ -46,14 +49,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation 'cz.msebera.android:httpclient:4.4.1.1'
     implementation 'com.qmuiteam:qmui:1.0.6'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-7'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.github.bumptech.glide:glide:4.3.1'
     compile 'org.greenrobot:eventbus:3.0.0'
-    //支付SDK
-    compile(name: 'pos-sdk-spos-release-1.1.8.13', ext: 'aar')
-    //联迪A8底层库
-    compile(name: 'landi-porting-bill99-0.2.20', ext: 'aar')
-    compile 'cz.msebera.android:httpclient:4.4.1.1'
 }

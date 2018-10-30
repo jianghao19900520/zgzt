@@ -19,14 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bill99.smartpos.sdk.api.BillPayment;
-import com.bill99.smartpos.sdk.api.BillPaymentCallback;
-import com.bill99.smartpos.sdk.api.model.BLCPConsumeMsg;
-import com.bill99.smartpos.sdk.api.model.BLCashConsumeMsg;
-import com.bill99.smartpos.sdk.api.model.BLPaymentRequest;
-import com.bill99.smartpos.sdk.api.model.BLScanBSCConsumeMsg;
 import com.bumptech.glide.Glide;
-import com.landicorp.module.scanner.ScannerActivity;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -95,7 +88,6 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
     private String isBackIntegral = "1";    // 是否返积分 0-是，1-否
     private String memberId;               // 会员id
     private String mOrderId;
-    private boolean isHaikePay = true;
 
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private int editIndex;
@@ -168,7 +160,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.scan_btn:
                 // 扫码
-                startActivity(new Intent(this, ScannerActivity.class));
+//                startActivity(new Intent(this, ScannerActivity.class));
                 break;
             case R.id.code_input_et:
                 // 搜索商品
@@ -194,11 +186,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                                 ToastUtils.showShort(BaseApplication.mContext, "请先选择商品");
                             }
                         } else {
-                            if (isHaikePay) {
-                                goHaiKePay();
-                            } else {
-                                goPay();
-                            }
+                            goHaiKePay();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -223,29 +211,6 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
         guideDatas = new ArrayList<>();
         goodsData = new ArrayList<>();
         getClerkData();
-        initPay();
-    }
-
-    /**
-     * 初始化支付
-     */
-    private void initPay() {
-        BillPayment.initPayment(this, new BillPaymentCallback() {
-            @Override
-            public void onSuccess(String successData) {
-
-            }
-
-            @Override
-            public void onFailed(String failedData) {
-                ToastUtils.showShort(BaseApplication.mContext, failedData);
-            }
-
-            @Override
-            public void onCancel(String cancelData) {
-                ToastUtils.showShort(BaseApplication.mContext, cancelData);
-            }
-        });
     }
 
     /**
@@ -423,11 +388,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                             if (TextUtils.isEmpty(mOrderId) || mOrderId.equals("null")) {
                                 ToastUtils.showShort(BaseApplication.mContext, object.getString("message"));
                             } else {
-                                if (isHaikePay) {
-                                    goHaiKePay();
-                                } else {
-                                    goPay();
-                                }
+                                goHaiKePay();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -440,35 +401,6 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                         DialogUtils.getInstance().dismiss();
                     }
                 });
-    }
-
-    /**
-     * 支付
-     */
-    private void goPay() {
-        View payHeaderView = inflater.inflate(R.layout.pay_header, null);
-        final QMUIBottomSheet qmuiBottomSheet = new QMUIBottomSheet
-                .BottomListSheetBuilder(this, false)
-                .addHeaderView(payHeaderView)
-                .addItem(R.drawable.unionpay, "银行卡支付", "yhkPay")
-                .addItem(R.drawable.qrcode_1, "扫码支付", "scan")
-                .addItem(R.drawable.cash, "现金支付", "money")
-                .addItem(R.drawable.receivables, "赊账", "shezhang")
-                .setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
-                    @Override
-                    public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
-                        dialog.dismiss();
-                        createPay(tag);
-                    }
-                })
-                .build();
-
-        TextView payMoneyTv = payHeaderView.findViewById(R.id.pay_header_money_tv);
-        TextView orderCodeTv = payHeaderView.findViewById(R.id.order_header_code_tv);
-        payMoneyTv.setText(payMoney);
-        orderCodeTv.setText("订单编号：" + mOrderId);
-
-        qmuiBottomSheet.show();
     }
 
     /**
@@ -508,139 +440,41 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
     private void createPay(String tag) {
         if ("yhkPay".equals(tag)) {
             // 银联卡支付
-            if (isHaikePay) {
-                Intent intent = new Intent();
-                intent.setComponent(new ComponentName(
-                        "com.landicorp.android.unionpay",
-                        "com.landicorp.android.unionpay.MainActivity"));
-                intent.putExtra("transName", "消费");
-                intent.putExtra("orderNo", mOrderId);
-                String amout = ArithUtils.mul(payMoney, "100", 0);
-                int zeroNum = 12 - amout.length();//传递的金额一定要12位数字，不足的需要在前面补0
-                StringBuffer buffer = new StringBuffer();
-                for (int i = 0; i < zeroNum; i++) {
-                    buffer.append("0");
-                }
-                buffer.append(amout);
-//                intent.putExtra("amount", buffer.toString());
-                intent.putExtra("amount", "000000000001");//todo jianghao 测试数据
-                startActivityForResult(intent, HAIKE_PAY_CODE);
-
-            } else {
-                //封装请求消息
-                BLCPConsumeMsg sdkMsg = new BLCPConsumeMsg();
-                //交易号
-                sdkMsg.transId = "zgzt" + TimeUtils.getNowMills();
-                //商户订单号
-                sdkMsg.orderId = mOrderId;
-                //商品名称
-                sdkMsg.merchName = "信赢名流商品";
-                //金额
-                sdkMsg.amt = ArithUtils.mul(payMoney, "100", 0);
-                //传入参数
-                final BLPaymentRequest<BLCPConsumeMsg> params = new BLPaymentRequest<>();
-                params.data = sdkMsg;
-                BillPayment.startPayment(CashierDeskActivity.this, params, new BillPaymentCallback() {
-                    @Override
-                    public void onSuccess(String successData) {
-                        ToastUtils.showShort(BaseApplication.mContext, successData);
-                        initPayView();
-                    }
-
-                    @Override
-                    public void onFailed(String failedData) {
-                        ToastUtils.showShort(BaseApplication.mContext, failedData);
-                    }
-
-                    @Override
-                    public void onCancel(String cancelData) {
-                        ToastUtils.showShort(BaseApplication.mContext, cancelData);
-                    }
-                });
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName(
+                    "com.landicorp.android.unionpay",
+                    "com.landicorp.android.unionpay.MainActivity"));
+            intent.putExtra("transName", "消费");
+            intent.putExtra("orderNo", mOrderId);
+            String amout = ArithUtils.mul(payMoney, "100", 0);
+            int zeroNum = 12 - amout.length();//传递的金额一定要12位数字，不足的需要在前面补0
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < zeroNum; i++) {
+                buffer.append("0");
             }
+            buffer.append(amout);
+//                intent.putExtra("amount", buffer.toString());
+            intent.putExtra("amount", "000000000001");//todo jianghao 测试数据
+            startActivityForResult(intent, HAIKE_PAY_CODE);
 
         } else if ("scan".equals(tag)) {
             // 扫码支付
-            if (isHaikePay) {
-                Intent intent = new Intent();
-                intent.setComponent(new ComponentName(
-                        "com.landicorp.android.unionpay",
-                        "com.landicorp.android.unionpay.MainActivity"));
-                intent.putExtra("transName", "二维码支付主扫");
-                intent.putExtra("orderNo", mOrderId);
-                String amout = ArithUtils.mul(payMoney, "100", 0);
-                int zeroNum = 12 - amout.length();//传递的金额一定要12位数字，不足的需要在前面补0
-                StringBuffer buffer = new StringBuffer();
-                for (int i = 0; i < zeroNum; i++) {
-                    buffer.append("0");
-                }
-                buffer.append(amout);
-//                intent.putExtra("amount", buffer.toString());
-                intent.putExtra("amount", "000000000001");//todo jianghao 测试数据
-                startActivityForResult(intent, HAIKE_PAY_CODE);
-            } else {
-                //封装请求消息
-                BLScanBSCConsumeMsg sdkMsg = new BLScanBSCConsumeMsg();
-                //交易号
-                sdkMsg.transId = "zgzt" + TimeUtils.getNowMills();
-                //商户订单号
-                sdkMsg.orderId = mOrderId;
-                //商品名称
-                sdkMsg.merchName = "信赢名流";
-                //金额
-                sdkMsg.amt = ArithUtils.mul(payMoney, "100", 0);
-                final BLPaymentRequest<BLScanBSCConsumeMsg> params = new BLPaymentRequest<>();
-                params.data = sdkMsg;
-                BillPayment.startPayment(CashierDeskActivity.this, params, new BillPaymentCallback() {
-                    @Override
-                    public void onSuccess(String successData) {
-                        ToastUtils.showShort(BaseApplication.mContext, successData);
-                        initPayView();
-                    }
-
-                    @Override
-                    public void onFailed(String failedData) {
-                        ToastUtils.showShort(BaseApplication.mContext, failedData);
-                    }
-
-                    @Override
-                    public void onCancel(String cancelData) {
-                        ToastUtils.showShort(BaseApplication.mContext, cancelData);
-                    }
-                });
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName(
+                    "com.landicorp.android.unionpay",
+                    "com.landicorp.android.unionpay.MainActivity"));
+            intent.putExtra("transName", "二维码支付主扫");
+            intent.putExtra("orderNo", mOrderId);
+            String amout = ArithUtils.mul(payMoney, "100", 0);
+            int zeroNum = 12 - amout.length();//传递的金额一定要12位数字，不足的需要在前面补0
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < zeroNum; i++) {
+                buffer.append("0");
             }
-
-        } else if ("money".equals(tag)) {
-
-            //封装请求消息
-            BLCashConsumeMsg sdkMsg = new BLCashConsumeMsg();
-            //币种
-            sdkMsg.cur = "CNY";
-            //支付交易号
-            sdkMsg.transId = "zgzt" + TimeUtils.getNowMills();
-            //订单号
-            sdkMsg.orderId = mOrderId;
-            //金额
-            sdkMsg.amt = ArithUtils.mul(payMoney, "100", 0);
-            BLPaymentRequest<BLCashConsumeMsg> params = new BLPaymentRequest<>();
-            params.data = sdkMsg;
-            BillPayment.startPayment(CashierDeskActivity.this, params, new BillPaymentCallback() {
-                @Override
-                public void onSuccess(String successData) {
-                    ToastUtils.showShort(BaseApplication.mContext, successData);
-                    initPayView();
-                }
-
-                @Override
-                public void onFailed(String failedData) {
-                    ToastUtils.showShort(BaseApplication.mContext, failedData);
-                }
-
-                @Override
-                public void onCancel(String cancelData) {
-                    ToastUtils.showShort(BaseApplication.mContext, cancelData);
-                }
-            });
+            buffer.append(amout);
+//                intent.putExtra("amount", buffer.toString());
+            intent.putExtra("amount", "000000000001");//todo jianghao 测试数据
+            startActivityForResult(intent, HAIKE_PAY_CODE);
 
         } else if ("shezhang".equals(tag)) {
             ToastUtils.showShort(BaseApplication.mContext, "赊账");

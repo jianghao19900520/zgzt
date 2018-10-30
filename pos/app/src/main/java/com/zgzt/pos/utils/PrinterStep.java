@@ -1,5 +1,6 @@
 package com.zgzt.pos.utils;
 
+import com.landicorp.android.eptapi.DeviceService;
 import com.landicorp.android.eptapi.device.Printer;
 import com.landicorp.android.eptapi.exception.RequestException;
 import com.landicorp.android.eptapi.utils.QrCode;
@@ -52,7 +53,7 @@ public class PrinterStep {
         }
         stepList.add(new Printer.Step() {
             @Override
-            public void doPrint(Printer printer) {
+            public void doPrint(Printer printer) throws Exception {
                 printer.setAutoTrunc(false);
                 Printer.Format format = new Printer.Format();
                 if (isTitle) {
@@ -86,7 +87,7 @@ public class PrinterStep {
         }
         stepList.add(new Printer.Step() {
             @Override
-            public void doPrint(Printer printer) {
+            public void doPrint(Printer printer) throws Exception {
                 try {
                     InputStream inputStream = BaseApplication.mContext.getAssets().open("pay.bmp");
                     printer.printImage(Printer.Alignment.LEFT, inputStream);
@@ -107,7 +108,7 @@ public class PrinterStep {
         }
         stepList.add(new Printer.Step() {
             @Override
-            public void doPrint(Printer printer) {
+            public void doPrint(Printer printer) throws Exception {
                 printer.printBarCode("1234567890");
             }
         });
@@ -123,7 +124,7 @@ public class PrinterStep {
         }
         stepList.add(new Printer.Step() {
             @Override
-            public void doPrint(Printer printer) {
+            public void doPrint(Printer printer) throws Exception {
                 printer.printQrCode(Printer.Alignment.CENTER, new QrCode("Fujian landi Commercial Equipment Co.,Ltd", ECLEVEL_Q),
                         200);
             }
@@ -140,7 +141,7 @@ public class PrinterStep {
         }
         stepList.add(new Printer.Step() {
             @Override
-            public void doPrint(Printer printer) {
+            public void doPrint(Printer printer) throws Exception {
                 printer.feedLine(line);
             }
         });
@@ -156,7 +157,7 @@ public class PrinterStep {
         }
         stepList.add(new Printer.Step() {
             @Override
-            public void doPrint(Printer printer) {
+            public void doPrint(Printer printer) throws Exception {
                 printer.cutPaper();
             }
         });
@@ -166,6 +167,11 @@ public class PrinterStep {
     public void startStepPrint() {
         if (stepList == null) {
             return;
+        }
+        try {
+            DeviceService.login(BaseApplication.mContext);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         progress = new Printer.Progress() {
             @Override
@@ -181,6 +187,7 @@ public class PrinterStep {
                 } else {
                     // TODO 打印失败
                 }
+                DeviceService.logout();
             }
 
             @Override
@@ -194,7 +201,7 @@ public class PrinterStep {
         }
         try {
             progress.start();
-        } catch (Exception e) {
+        } catch (RequestException e) {
             e.printStackTrace();
         }
     }

@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.landicorp.module.scanner.ScannerActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
@@ -201,7 +200,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
                 overridePendingTransition(0, 0);
                 break;
             case R.id.scan_btn:
-                startActivity(new Intent(this, ScannerActivity.class));
+//                startActivity(new Intent(this, ScannerActivity.class));
                 break;
             case R.id.search_btn:
                 searchKey = code_input_et.getText().toString().trim();

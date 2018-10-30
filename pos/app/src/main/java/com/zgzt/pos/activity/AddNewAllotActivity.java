@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.landicorp.module.scanner.ScannerActivity;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.zgzt.pos.R;
@@ -200,7 +199,7 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
                 showDate();
                 break;
             case R.id.scan_btn:
-                startActivity(new Intent(this, ScannerActivity.class));
+//                startActivity(new Intent(this, ScannerActivity.class));
                 break;
             case R.id.title_right_text:
                 new QMUIDialog.MessageDialogBuilder(this)
