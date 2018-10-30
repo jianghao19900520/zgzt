@@ -38,6 +38,7 @@ import com.zgzt.pos.event.GoodsEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.utils.ArithUtils;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.TimeUtils;
 import com.zgzt.pos.utils.ToastUtils;
@@ -310,7 +311,6 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(IOException e) {
-
             }
         });
     }
@@ -337,6 +337,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
      * 获取导购员列表
      */
     private void getVipData() {
+        DialogUtils.getInstance().show(mContext);
         HttpApi.getVipData(operatorNo, userinput, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -351,11 +352,12 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }
@@ -409,6 +411,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
             confirmPosProducts.put(item);
         }
         //提交订单
+        DialogUtils.getInstance().show(mContext, mContext.getString(R.string.submit_hint));
         HttpApi.confirmorder(orderBelong, confirmPosProducts, shoppingGuideId, shoppingGuideName, PreferencesUtil.getInstance(mContext).getString(Constant.USER_ID),
                 PreferencesUtil.getInstance(mContext).getString(Constant.LOGIN_NAME), isBackFinance, isBackIntegral, memberId, operatorNo, new HttpCallback() {
                     @Override
@@ -428,11 +431,12 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        DialogUtils.getInstance().dismiss();
                     }
 
                     @Override
                     public void onFailure(IOException e) {
-
+                        DialogUtils.getInstance().dismiss();
                     }
                 });
     }

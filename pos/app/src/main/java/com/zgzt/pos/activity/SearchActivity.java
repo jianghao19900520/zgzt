@@ -27,6 +27,7 @@ import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.event.GoodsEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.ToastUtils;
 import com.zgzt.pos.utils.Utils;
 
@@ -101,7 +102,7 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
                 keywords = search_input_et.getText().toString().trim();
                 InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                getSearchGoodsList();
+                getSearchGoodsList(true);
             }
         });
     }
@@ -167,7 +168,7 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
             }
         });
         if ("scan".equals(mType)) {
-            getSearchGoodsList();
+            getSearchGoodsList(true);
         }
 
         search_input_et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -179,7 +180,7 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
                         Utils.closeKeybord(search_input_et, SearchActivity.this);
                     }
                     keywords = search_input_et.getText().toString().trim();
-                    getSearchGoodsList();
+                    getSearchGoodsList(true);
                     return true;
                 }
 
@@ -191,20 +192,23 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         pageIndex++;
-        getSearchGoodsList();
+        getSearchGoodsList(false);
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         pageIndex = 0;
-        getSearchGoodsList();
+        getSearchGoodsList(false);
     }
 
     /**
      * 商品搜索
      */
-    private void getSearchGoodsList() {
-        HttpApi.searchGood(pageIndex, Constant.PAGE_SIZE, whId, keywords, new HttpCallback() {
+    private void getSearchGoodsList(boolean show) {
+        if(show){
+            DialogUtils.getInstance().show(mContext);
+        }
+        HttpApi.searchGoods(pageIndex, Constant.PAGE_SIZE, whId, keywords, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
                 if (pageIndex == 0) {
@@ -223,6 +227,7 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
@@ -232,6 +237,7 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
                 } else {
                     refreshLayout.finishLoadmore();
                 }
+                DialogUtils.getInstance().dismiss();
             }
         });
     }

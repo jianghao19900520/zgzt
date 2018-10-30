@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.event.WarehouseEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
 
@@ -102,13 +102,13 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         pageIndex++;
-        getSearchStock();
+        getSearchStock(false);
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         pageIndex = 0;
-        getSearchStock();
+        getSearchStock(false);
     }
 
     /**
@@ -131,8 +131,11 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
     /**
      * 商品搜索
      */
-    private void getSearchStock() {
-        HttpApi.searchGood(pageIndex, Constant.PAGE_SIZE, whId, searchKey, new HttpCallback() {
+    private void getSearchStock(boolean show) {
+        if(show){
+            DialogUtils.getInstance().show(mContext);
+        }
+        HttpApi.searchGoods(pageIndex, Constant.PAGE_SIZE, whId, searchKey, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
                 if (pageIndex == 0) {
@@ -151,11 +154,12 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }
@@ -202,7 +206,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
             case R.id.search_btn:
                 searchKey = code_input_et.getText().toString().trim();
                 pageIndex = 0;
-                getSearchStock();
+                getSearchStock(true);
                 break;
         }
     }
@@ -301,7 +305,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         whId = item.getWhId();
         whName = item.getWhName();
         pageIndex = 0;
-        getSearchStock();
+        getSearchStock(true);
     }
 
 }

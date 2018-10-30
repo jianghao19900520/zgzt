@@ -1,5 +1,6 @@
 package com.zgzt.pos.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.zgzt.pos.R;
 import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.ToastUtils;
 import com.zgzt.pos.view.ShowPopupWindow;
 
@@ -34,19 +36,20 @@ import java.util.List;
  */
 public class OutStockDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView title_back_btn;
-    TextView title_text;
-    TextView title_right_text;
-    TextView order_code;
-    TextView out_stock;
-    TextView in_stock;
-    TextView order_date;
-    TextView single_person;
-    TextView remarks_info;
-    TextView express;
-    EditText express_code_input;
-    LinearLayout goods_layout;
-    LinearLayout express_btn;
+    private Context mContext;
+    private ImageView title_back_btn;
+    private TextView title_text;
+    private TextView title_right_text;
+    private TextView order_code;
+    private TextView out_stock;
+    private TextView in_stock;
+    private TextView order_date;
+    private TextView single_person;
+    private TextView remarks_info;
+    private TextView express;
+    private EditText express_code_input;
+    private LinearLayout goods_layout;
+    private LinearLayout express_btn;
 
     private List<String> datas;
     private ShowPopupWindow showPopupWindow;
@@ -58,6 +61,7 @@ public class OutStockDetailsActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_out_stock_details);
+        mContext = this;
         initView();
         initTitle();
         initData();
@@ -131,6 +135,7 @@ public class OutStockDetailsActivity extends AppCompatActivity implements View.O
      * 获取入库单商品信息
      */
     private void getInStockGoodsInfo() {
+        DialogUtils.getInstance().show(mContext);
         HttpApi.getStockInGoodsInfo(0, 1000, mId, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -145,11 +150,12 @@ public class OutStockDetailsActivity extends AppCompatActivity implements View.O
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }
@@ -190,6 +196,7 @@ public class OutStockDetailsActivity extends AppCompatActivity implements View.O
     }
 
     private void confirmGoods() {
+        DialogUtils.getInstance().show(mContext, mContext.getString(R.string.submit_hint));
         HttpApi.confirmGoods(new JSONArray().put(mId), 1, 1, 1, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -205,11 +212,12 @@ public class OutStockDetailsActivity extends AppCompatActivity implements View.O
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }

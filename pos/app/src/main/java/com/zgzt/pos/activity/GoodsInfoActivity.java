@@ -27,6 +27,7 @@ import com.zgzt.pos.event.GoodsEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.utils.ArithUtils;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
 
@@ -137,6 +138,7 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
 
     private void getGoodsInfo() {
         try {
+            DialogUtils.getInstance().show(mContext);
             HttpApi.getGoodsInfo(mData.getString("productId"), PreferencesUtil.getInstance(mContext).getString(Constant.USER_ID), new HttpCallback() {
                 @Override
                 public void onResponse(Object result) {
@@ -151,11 +153,12 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    DialogUtils.getInstance().dismiss();
                 }
 
                 @Override
                 public void onFailure(IOException e) {
-
+                    DialogUtils.getInstance().dismiss();
                 }
             });
             mData.getString("productId");

@@ -18,6 +18,7 @@ import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.node.PayMangerItemNode;
 import com.zgzt.pos.utils.ArithUtils;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.TimeUtils;
 import com.zgzt.pos.view.ShowPopupWindow;
@@ -181,6 +182,7 @@ public class DayPayActivity extends AppCompatActivity implements View.OnClickLis
      * 获取每日支付明细列表
      */
     private void getPayDayDetailedList() {
+        DialogUtils.getInstance().show(mContext);
         String storeId = PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_ID);
         HttpApi.getPayDayDetailedList(storeId, createdTimeFrom, createdTimeTo, shoppingGuideId, payType, new HttpCallback() {
 
@@ -191,11 +193,12 @@ public class DayPayActivity extends AppCompatActivity implements View.OnClickLis
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }

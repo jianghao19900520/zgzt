@@ -17,6 +17,7 @@ import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.event.WarehouseEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -82,6 +83,7 @@ public class StockFilterActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void getSearchStockList() {
+        DialogUtils.getInstance().show(mContext);
         HttpApi.getSearchStockList(0, 1000, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -96,11 +98,12 @@ public class StockFilterActivity extends AppCompatActivity implements View.OnCli
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }

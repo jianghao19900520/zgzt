@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.MutableContextWrapper;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.zgzt.pos.R;
 import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.ToastUtils;
 
 import org.json.JSONArray;
@@ -34,24 +36,26 @@ import java.io.IOException;
  */
 public class InStockDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView title_back_btn;
-    TextView title_text;
-    TextView title_right_text;
-    TextView order_code;
-    TextView out_stock;
-    TextView in_stock;
-    TextView order_date;
-    TextView single_person;
-    TextView express_name;
-    TextView express_code;
-    TextView remarks_info;
-    LinearLayout goods_layout;
+    private Context mContext;
+    private ImageView title_back_btn;
+    private TextView title_text;
+    private TextView title_right_text;
+    private TextView order_code;
+    private TextView out_stock;
+    private TextView in_stock;
+    private TextView order_date;
+    private TextView single_person;
+    private TextView express_name;
+    private TextView express_code;
+    private TextView remarks_info;
+    private LinearLayout goods_layout;
     private String mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_stock_details);
+        mContext = this;
         initView();
         initTitle();
         initData();
@@ -90,6 +94,7 @@ public class InStockDetailsActivity extends AppCompatActivity implements View.On
     }
 
     private void getStockInBillInfo() {
+        DialogUtils.getInstance().show(mContext);
         HttpApi.getStockInBillInfo(mId, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -104,11 +109,12 @@ public class InStockDetailsActivity extends AppCompatActivity implements View.On
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }
@@ -135,6 +141,7 @@ public class InStockDetailsActivity extends AppCompatActivity implements View.On
     }
 
     private void getStockInGoodsInfo() {
+        DialogUtils.getInstance().show(mContext);
         HttpApi.getStockInGoodsInfo(0, 1000, mId, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -149,11 +156,12 @@ public class InStockDetailsActivity extends AppCompatActivity implements View.On
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }
@@ -222,6 +230,7 @@ public class InStockDetailsActivity extends AppCompatActivity implements View.On
     }
 
     private void confirmGoods() {
+        DialogUtils.getInstance().show(mContext, mContext.getString(R.string.submit_hint));
         HttpApi.confirmGoods(new JSONArray().put(mId), 2, 0, 0, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -237,11 +246,12 @@ public class InStockDetailsActivity extends AppCompatActivity implements View.On
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }

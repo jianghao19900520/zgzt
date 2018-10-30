@@ -20,6 +20,7 @@ import com.zgzt.pos.base.CommViewHolder;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
 
@@ -161,6 +162,7 @@ public class StockAllotActivity extends AppCompatActivity implements OnRefreshLo
             stockType = 1;
         }
         String userId = PreferencesUtil.getInstance(mContext).getString(Constant.USER_ID);
+        DialogUtils.getInstance().show(mContext);
         HttpApi.plistbyWhreq(userId, pageIndex, Constant.PAGE_SIZE, stockType, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -175,11 +177,12 @@ public class StockAllotActivity extends AppCompatActivity implements OnRefreshLo
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }

@@ -20,6 +20,7 @@ import com.zgzt.pos.R;
 import com.zgzt.pos.base.Constant;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String cashier;//输入的账号
     private String password;//输入的密码
 
-    private QMUITipDialog tipDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         mContext = this;
         initView();
-        initDialog();
         initData();
     }
 
@@ -65,17 +65,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login_cashier_more_btn.setOnClickListener(this);
         login_password_input.setOnClickListener(this);
         login_btn.setOnClickListener(this);
-    }
-
-    /**
-     * 初始化对话框对话框
-     */
-    private void initDialog() {
-        tipDialog = new QMUITipDialog.Builder(LoginActivity.this)
-                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
-                .setTipWord(getString(R.string.login_hint))
-                .create();
-        tipDialog.setCancelable(false);
     }
 
     /**
@@ -148,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 获取token
      */
     private void getToken() {
-        tipDialog.show();
+        DialogUtils.getInstance().show(mContext, getString(R.string.login_hint));
         HttpApi.getToken(cashier, password, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -158,18 +147,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     PreferencesUtil.getInstance(mContext).putString(Constant.TOKEN, data.getString("access_token"));
                     login();
                 } else {
-                    if ((null != tipDialog) && tipDialog.isShowing()) {
-                        tipDialog.dismiss();
-                    }
+                    DialogUtils.getInstance().dismiss();
                     ToastUtils.showShort(BaseApplication.mContext, data.getString("message"));
                 }
             }
 
             @Override
             public void onFailure(IOException e) {
-                if ((null != tipDialog) && tipDialog.isShowing()) {
-                    tipDialog.dismiss();
-                }
+                DialogUtils.getInstance().dismiss();
             }
         });
     }
@@ -193,16 +178,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }else{
                     ToastUtils.showShort(BaseApplication.mContext, jsonObject.getString("message"));
                 }
-                if ((null != tipDialog) && tipDialog.isShowing()) {
-                    tipDialog.dismiss();
-                }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-                if ((null != tipDialog) && tipDialog.isShowing()) {
-                    tipDialog.dismiss();
-                }
+                DialogUtils.getInstance().dismiss();
             }
         });
     }

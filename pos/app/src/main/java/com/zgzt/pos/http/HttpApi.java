@@ -346,7 +346,7 @@ public class HttpApi {
      * @param pageSize
      * @param whId
      */
-    public static void searchGood(int pageIndex, int pageSize, String whId, String searchKey, final HttpCallback callback) {
+    public static void searchGoods(int pageIndex, int pageSize, String whId, String searchKey, final HttpCallback callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("pageIndex", pageIndex);

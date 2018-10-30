@@ -23,6 +23,7 @@ import com.zgzt.pos.event.GoodsEvent;
 import com.zgzt.pos.http.HttpApi;
 import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.node.PayMangerNode;
+import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.TimeUtils;
 import com.zgzt.pos.utils.ToastUtils;
@@ -141,6 +142,7 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void getSearchStockList() {
+        DialogUtils.getInstance().show(mContext);
         HttpApi.getSearchStockList(0, 1000, new HttpCallback() {
             @Override
             public void onResponse(Object result) {
@@ -155,11 +157,12 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                DialogUtils.getInstance().dismiss();
             }
 
             @Override
             public void onFailure(IOException e) {
-
+                DialogUtils.getInstance().dismiss();
             }
         });
     }
@@ -343,6 +346,7 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
      */
     private void confirmwhreq() {
         try {
+            DialogUtils.getInstance().show(mContext, mContext.getString(R.string.submit_hint));
             HttpApi.confirmwhreq(inRequisitionLineList, remark, reqTime + " 00:00:00",
                     outWarehouse.getString("id"), outWarehouse.getString("whName"),
                     PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_ID), PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_NAME),
@@ -362,11 +366,12 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            DialogUtils.getInstance().dismiss();
                         }
 
                         @Override
                         public void onFailure(IOException e) {
-
+                            DialogUtils.getInstance().dismiss();
                         }
                     });
         } catch (Exception e) {
