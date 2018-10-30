@@ -2,6 +2,7 @@ package com.zgzt.pos.utils;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 /**
@@ -13,11 +14,15 @@ import android.widget.Toast;
 public class ToastUtils {
 
     public static void showShort(Application context, CharSequence text) {
-        Toast.makeText(context, text,Toast.LENGTH_SHORT).show();
+        if (!TextUtils.isEmpty(text)) {
+            Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void showLong(Application context, CharSequence text) {
-        Toast.makeText(context, text,Toast.LENGTH_LONG).show();
+        if (!TextUtils.isEmpty(text)) {
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+        }
     }
 
 }
