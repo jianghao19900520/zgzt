@@ -419,6 +419,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                         try {
                             JSONObject object = new JSONObject(String.valueOf(result));
                             mOrderId = object.getString("result");
+                            mOrderId = "8w1ium7r2v2";//todo jianghao 测试数据
                             if (TextUtils.isEmpty(mOrderId) || mOrderId.equals("null")) {
                                 ToastUtils.showShort(BaseApplication.mContext, object.getString("message"));
                             } else {
@@ -522,7 +523,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                 }
                 buffer.append(amout);
 //                intent.putExtra("amount", buffer.toString());
-                intent.putExtra("amount", "000000000001");//测试数据
+                intent.putExtra("amount", "000000000001");//todo jianghao 测试数据
                 startActivityForResult(intent, HAIKE_PAY_CODE);
 
             } else {
@@ -575,7 +576,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                 }
                 buffer.append(amout);
 //                intent.putExtra("amount", buffer.toString());
-                intent.putExtra("amount", "000000000001");//测试数据
+                intent.putExtra("amount", "000000000001");//todo jianghao 测试数据
                 startActivityForResult(intent, HAIKE_PAY_CODE);
             } else {
                 //封装请求消息
