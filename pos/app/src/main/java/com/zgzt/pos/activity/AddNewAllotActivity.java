@@ -118,7 +118,6 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
         code_input_et = findViewById(R.id.code_input_et);
         goods_item_layout = findViewById(R.id.goods_item_layout);
         call_out_name_extend_btn = findViewById(R.id.call_out_name_extend_btn);
-        title_right_text.setOnClickListener(this);
         call_out_name_extend_btn.setOnClickListener(this);
         code_input_et.setOnClickListener(this);
         findViewById(R.id.bills_date_extend_btn).setOnClickListener(this);
@@ -130,6 +129,8 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
         title_right_text.setText("提交");
         title_right_text.setVisibility(View.VISIBLE);
         title_back_btn.setVisibility(View.VISIBLE);
+        title_right_text.setOnClickListener(this);
+        title_back_btn.setOnClickListener(this);
     }
 
     public void initData() {
@@ -226,6 +227,9 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.code_input_et:
                 doSearchGoods();
+                break;
+            case R.id.title_back_btn:
+                AddNewAllotActivity.this.finish();
                 break;
         }
     }

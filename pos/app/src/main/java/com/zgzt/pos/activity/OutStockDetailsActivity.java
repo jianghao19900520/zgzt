@@ -82,7 +82,6 @@ public class OutStockDetailsActivity extends AppCompatActivity implements View.O
         goods_layout = findViewById(R.id.goods_layout);
         express_btn = findViewById(R.id.express_btn);
         express_btn.setOnClickListener(this);
-        title_right_text.setOnClickListener(this);
 
     }
 
@@ -91,6 +90,8 @@ public class OutStockDetailsActivity extends AppCompatActivity implements View.O
         title_back_btn.setVisibility(View.VISIBLE);
 //        title_right_text.setVisibility(View.VISIBLE);
         title_right_text.setText("确认发货");
+        title_right_text.setOnClickListener(this);
+        title_back_btn.setOnClickListener(this);
     }
 
     private void initData() {
@@ -252,6 +253,9 @@ public class OutStockDetailsActivity extends AppCompatActivity implements View.O
                 if (mIsCanCliced) {
                     showCallOutName();
                 }
+                break;
+            case R.id.title_back_btn:
+                OutStockDetailsActivity.this.finish();
                 break;
         }
     }

@@ -75,13 +75,14 @@ public class InStockDetailsActivity extends AppCompatActivity implements View.On
         remarks_info = findViewById(R.id.remarks_info);
         goods_layout = findViewById(R.id.goods_layout);
         express_code.setOnClickListener(this);
-        title_right_text.setOnClickListener(this);
     }
 
     public void initTitle() {
         title_text.setText("入库单详情");
         title_back_btn.setVisibility(View.VISIBLE);
         title_right_text.setText("确认收货");
+        title_right_text.setOnClickListener(this);
+        title_back_btn.setOnClickListener(this);
     }
 
     private void initData() {
@@ -225,6 +226,9 @@ public class InStockDetailsActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.express_code:
                 setDataToClipboard();
+                break;
+            case R.id.title_back_btn:
+                InStockDetailsActivity.this.finish();
                 break;
         }
     }

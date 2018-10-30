@@ -52,6 +52,12 @@ public class GoodsAllocationActivity extends AppCompatActivity implements ScaleR
     public void initTitle() {
         title_back_btn.setVisibility(View.VISIBLE);
         title_text.setText("商品调拨");
+        title_back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoodsAllocationActivity.this.finish();
+            }
+        });
     }
 
     @Override

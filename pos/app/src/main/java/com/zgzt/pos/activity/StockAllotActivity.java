@@ -70,6 +70,12 @@ public class StockAllotActivity extends AppCompatActivity implements OnRefreshLo
         intent = getIntent();
         type = intent.getStringExtra("type");
         title_back_btn.setVisibility(View.VISIBLE);
+        title_back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StockAllotActivity.this.finish();
+            }
+        });
         if ("in".equals(type)) {
             title_text.setText("调拨入库单");
         } else if ("out".equals(type)) {
