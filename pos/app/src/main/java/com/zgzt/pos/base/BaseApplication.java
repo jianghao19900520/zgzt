@@ -57,7 +57,7 @@ public class BaseApplication extends Application {
     }
 
     /**
-     * 初始化快钱SDK
+     * 初始化支付SDK
      */
     private void initPaySDK() {
         //设置支付SDK调试模式，建议开发版本设为true, 发布版本设为false。默认为false
