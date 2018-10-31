@@ -2,7 +2,7 @@ package com.zgzt.pos.fragment;
 
 
 /**
- * 支付管理的fragment
+ * 账单的fragment
  */
 
 import android.content.Context;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 支付管理的fragment
+ * 账单的fragment
  */
 public class PayMangerFragment extends Fragment implements OnRefreshListener {
 

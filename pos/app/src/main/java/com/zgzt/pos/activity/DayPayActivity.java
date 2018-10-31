@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 支付明细页面
+ * 账单明细页面
  */
 public class DayPayActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -97,7 +97,7 @@ public class DayPayActivity extends AppCompatActivity implements View.OnClickLis
      * 初始化标题栏
      */
     public void initTitle() {
-        title_text.setText("支付明细");
+        title_text.setText("账单明细");
         title_back_btn.setVisibility(View.VISIBLE);
         title_back_btn.setOnClickListener(this);
         Bundle bundle = getIntent().getBundleExtra("bundle");
@@ -180,7 +180,7 @@ public class DayPayActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     /**
-     * 获取每日支付明细列表
+     * 获取每日账单明细列表
      */
     private void getPayDayDetailedList() {
         DialogUtils.getInstance().show(mContext);

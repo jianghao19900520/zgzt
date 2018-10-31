@@ -283,7 +283,7 @@ public class HttpApi {
     }
 
     /**
-     * 支付明细
+     * 账单明细
      *
      * @param storeId         门店id
      * @param createdTimeFrom 开始时间

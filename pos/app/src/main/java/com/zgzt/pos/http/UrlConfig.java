@@ -23,7 +23,7 @@ public class UrlConfig {
     public static final String PAY_INFO_LIST = "business/services/ordermemberstatistics/plistby";
     //每日支付店员信息
     public static final String DAY_PAY_CLERK = "business/services/pointofsales/getuserlistbywarehouse/";
-    //每日支付明细列表
+    //每日账单明细列表
     public static final String DAY_PAY_DETAILED_LIST = "business/services/msorder/pliststoreorder";
     //商品搜索
     public static final String SEARCH_GOODS = "business/services/whproductstock/stocksearchlist";

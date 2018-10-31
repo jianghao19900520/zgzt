@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 支付管理页面
+ * 账单页面
  */
 public class PayMangerActivity extends AppCompatActivity {
 
@@ -56,7 +56,7 @@ public class PayMangerActivity extends AppCompatActivity {
      */
     private void initTitle() {
         title_text.setText(getString(R.string.app_name));
-        title_text.setText("支付管理");
+        title_text.setText("账单");
         title_back_btn.setVisibility(View.VISIBLE);
         title_back_btn.setOnClickListener(new View.OnClickListener() {
             @Override

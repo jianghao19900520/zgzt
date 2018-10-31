@@ -35,7 +35,7 @@ public class HomeActivity extends AppCompatActivity implements ScaleRelativeLayo
     private ImageView title_right_image;//标题栏右侧图标
     private RelativeLayout cashier_desk_btn;//收银台
     private ScaleRelativeLayout online_order_pay_btn;//线上订单支付
-    private ScaleRelativeLayout pay_manager_btn;//支付管理
+    private ScaleRelativeLayout pay_manager_btn;//账单
     private ScaleRelativeLayout stock_query_btn;//库存查询
     private ScaleRelativeLayout goods_allocation_btn;//商品调拨
     private boolean isExit = false;//双击退出APP

@@ -4,12 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <include layout="@layout/include_title"/>
+
+    <include layout="@layout/include_title" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
+
         <RelativeLayout
             android:id="@+id/cashier_desk_btn"
             android:layout_width="match_parent"
@@ -20,139 +23,158 @@
                 android:layout_width="235dp"
                 android:layout_height="135dp"
                 android:layout_centerInParent="true"
-                android:duplicateParentState="true"
-                android:background="@drawable/white_bg">
+                android:background="@drawable/white_bg"
+                android:duplicateParentState="true">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:gravity="center_vertical">
+
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/receivables"/>
+                        android:src="@drawable/receivables" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#e67456"
-                        android:textSize="20dp"
                         android:layout_marginLeft="5dp"
-                        android:text="收银台"/>
+                        android:text="收银台"
+                        android:textColor="#e67456"
+                        android:textSize="20dp" />
                 </LinearLayout>
 
             </RelativeLayout>
 
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
-            <com.zgzt.pos.view.ScaleRelativeLayout
-                android:id="@+id/online_order_pay_btn"
-                android:layout_width="167dp"
-                android:layout_height="155dp"
-                android:background="#D25CEB">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_centerInParent="true">
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/card"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:text="线上订单支付"
-                        android:textSize="18dp"
-                        android:layout_marginTop="15dp"/>
-                </LinearLayout>
-            </com.zgzt.pos.view.ScaleRelativeLayout>
-            <com.zgzt.pos.view.ScaleRelativeLayout
-                android:id="@+id/pay_manager_btn"
-                android:layout_width="167dp"
-                android:layout_height="155dp"
-                android:background="#41A5F3"
-                android:layout_marginLeft="6dp">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_centerInParent="true">
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/administration"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:text="支付管理"
-                        android:textSize="18dp"
-                        android:layout_marginTop="15dp"/>
-                </LinearLayout>
-            </com.zgzt.pos.view.ScaleRelativeLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
 
             <com.zgzt.pos.view.ScaleRelativeLayout
                 android:id="@+id/stock_query_btn"
                 android:layout_width="167dp"
                 android:layout_height="155dp"
                 android:background="#91CA47">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_centerInParent="true"
                     android:gravity="center_horizontal"
-                    android:layout_centerInParent="true">
+                    android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/query"/>
+                        android:src="@drawable/query" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
+                        android:layout_marginTop="15dp"
                         android:text="库存查询"
-                        android:textSize="18dp"
-                        android:layout_marginTop="15dp"/>
+                        android:textColor="@android:color/white"
+                        android:textSize="18dp" />
                 </LinearLayout>
             </com.zgzt.pos.view.ScaleRelativeLayout>
+
             <com.zgzt.pos.view.ScaleRelativeLayout
                 android:id="@+id/goods_allocation_btn"
                 android:layout_width="167dp"
                 android:layout_height="155dp"
-                android:background="#F8AF3C"
-                android:layout_marginLeft="6dp">
+                android:layout_marginLeft="6dp"
+                android:background="#F8AF3C">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_centerInParent="true"
                     android:gravity="center_horizontal"
-                    android:layout_centerInParent="true">
+                    android:orientation="vertical">
+
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/allocation"/>
+                        android:src="@drawable/allocation" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
+                        android:layout_marginTop="15dp"
                         android:text="商品调拨"
-                        android:textSize="18dp"
-                        android:layout_marginTop="15dp"/>
+                        android:textColor="@android:color/white"
+                        android:textSize="18dp" />
+                </LinearLayout>
+            </com.zgzt.pos.view.ScaleRelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <com.zgzt.pos.view.ScaleRelativeLayout
+                android:id="@+id/online_order_pay_btn"
+                android:layout_width="167dp"
+                android:layout_height="155dp"
+                android:background="#D25CEB">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/card" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="线上订单支付"
+                        android:textColor="@android:color/white"
+                        android:textSize="18dp" />
+                </LinearLayout>
+            </com.zgzt.pos.view.ScaleRelativeLayout>
+
+            <com.zgzt.pos.view.ScaleRelativeLayout
+                android:id="@+id/pay_manager_btn"
+                android:layout_width="167dp"
+                android:layout_height="155dp"
+                android:layout_marginLeft="6dp"
+                android:background="#41A5F3">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/administration" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="账单"
+                        android:textColor="@android:color/white"
+                        android:textSize="18dp" />
                 </LinearLayout>
             </com.zgzt.pos.view.ScaleRelativeLayout>
 
