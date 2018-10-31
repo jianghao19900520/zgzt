@@ -137,7 +137,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="37dp"
                     android:layout_weight="1"
-                    tools:text="2018-03-08"
                     android:hint="请选择日期"
                     android:textColor="@color/color_33"
                     android:textColorHint="@color/color_99"

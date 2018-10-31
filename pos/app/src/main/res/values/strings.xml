@@ -1,5 +1,5 @@
 <resources>
-    <string name="zgzt_pos_name">止观智通门店POS</string>
+    <string name="app_name">止观智通门店POS</string>
     <string name="error_please_check_network">请检查网络。</string>
     <string name="error_timeout">请求超时，网络不好或者服务器不稳定。</string>
     <string name="error_not_found_server">未发现指定服务器，清切换网络后重试。</string>

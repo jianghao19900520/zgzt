@@ -13,6 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codbking.widget.DatePickDialog;
+import com.codbking.widget.OnChangeLisener;
+import com.codbking.widget.OnSureLisener;
+import com.codbking.widget.bean.DateType;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.zgzt.pos.R;
@@ -38,6 +42,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -282,18 +288,42 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
      * 显示日期
      */
     private void showDate() {
-        String createTimeBegin = "2017-09-15 00:01";
-        String createTimeEnd = TimeUtils.getNowString();
-        TimeSelector timeSel = new TimeSelector(this, new TimeSelector.ResultHandler() {
+//        String createTimeBegin = "2017-01-01 00:01";
+//        String createTimeEnd = TimeUtils.getNowString();
+//        TimeSelector timeSel = new TimeSelector(this, new TimeSelector.ResultHandler() {
+//            @Override
+//            public void handle(String time) {
+//                String[] split = time.split(" ");
+//                bills_date.setText(split[0]);
+//            }
+//        }, createTimeBegin, createTimeEnd);
+//        timeSel.setMode(TimeSelector.MODE.YMD);
+//        timeSel.setTitle("选择日期");
+//        timeSel.show();
+        DatePickDialog dialog = new DatePickDialog(this);
+        //设置上下年分限制
+        dialog.setYearLimt(5);
+        //设置标题
+        dialog.setTitle("选择时间");
+        //设置类型
+        dialog.setType(DateType.TYPE_YMD);
+        //设置消息体的显示格式，日期格式
+        dialog.setMessageFormat("yyyy-MM-dd");
+        //设置选择回调
+        dialog.setOnChangeLisener(null);
+        //设置点击确定按钮回调
+        dialog.setOnSureLisener(new OnSureLisener() {
             @Override
-            public void handle(String time) {
-                String[] split = time.split(" ");
-                bills_date.setText(split[0]);
+            public void onSure(Date date) {
+                Calendar calendar = Calendar.getInstance();//日历对象
+                calendar.setTime(date);//设置当前日期
+                String yearStr = calendar.get(Calendar.YEAR) + "";//获取年份
+                int month = calendar.get(Calendar.MONTH) + 1;//获取月份
+                int day = calendar.get(Calendar.DATE);//获取日
+                bills_date.setText(yearStr + "-" + month + "-" + day);
             }
-        }, createTimeBegin, createTimeEnd);
-        timeSel.setMode(TimeSelector.MODE.YMD);
-        timeSel.setTitle("选择日期");
-        timeSel.show();
+        });
+        dialog.show();
     }
 
     /**

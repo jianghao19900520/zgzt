@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity implements ScaleRelativeLayo
      * 初始化标题栏
      */
     private void initTitle(){
-        title_text.setText(getString(R.string.zgzt_pos_name));
+        title_text.setText(getString(R.string.app_name));
         title_right_image.setVisibility(View.GONE);
         title_right_image.setOnClickListener(new View.OnClickListener() {
             @Override
