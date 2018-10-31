@@ -23,6 +23,7 @@ import com.zgzt.pos.http.HttpCallback;
 import com.zgzt.pos.utils.DialogUtils;
 import com.zgzt.pos.utils.PreferencesUtil;
 import com.zgzt.pos.utils.ToastUtils;
+
 import java.io.IOException;
 
 /**
@@ -41,7 +42,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String userStrs;
     private String cashier;//输入的账号
     private String password;//输入的密码
-
 
 
     @Override
@@ -70,13 +70,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * 初始化数据
      */
-    private void initData(){
+    private void initData() {
         userStrs = PreferencesUtil.getInstance(BaseApplication.mContext).getString(Constant.USERS);
-        if (userStrs.length()>0){
+        if (userStrs.length() > 0) {
             login_cashier_more_btn.setVisibility(View.VISIBLE);
             users = userStrs.split(",");
             login_cashier_input.setText(users[0]);
-        }else {
+        } else {
             login_cashier_more_btn.setVisibility(View.GONE);
         }
     }
@@ -170,12 +170,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 int code = jsonObject.getInteger("code");
                 if (code == 0) {
                     JSONObject object = jsonObject.getJSONObject("result");
-                    PreferencesUtil.getInstance(mContext).putString(Constant.USER_ID, object.getString("userId"));
-                    PreferencesUtil.getInstance(mContext).putString(Constant.LOGIN_NAME, object.getString("loginName"));
-                    PreferencesUtil.getInstance(mContext).putString(Constant.WAREHOUSE_ID, object.getString("warehouseId"));
-                    PreferencesUtil.getInstance(mContext).putString(Constant.WAREHOUSE_NAME, object.getString("warehouseName"));
-                    goMainActivity();
-                }else{
+                    if (object == null) {
+                        ToastUtils.showShort(BaseApplication.mContext, jsonObject.getString("message"));
+                    } else {
+                        PreferencesUtil.getInstance(mContext).putString(Constant.USER_ID, object.getString("userId"));
+                        PreferencesUtil.getInstance(mContext).putString(Constant.LOGIN_NAME, object.getString("loginName"));
+                        PreferencesUtil.getInstance(mContext).putString(Constant.WAREHOUSE_ID, object.getString("warehouseId"));
+                        PreferencesUtil.getInstance(mContext).putString(Constant.WAREHOUSE_NAME, object.getString("warehouseName"));
+                        goMainActivity();
+                    }
+                } else {
                     ToastUtils.showShort(BaseApplication.mContext, jsonObject.getString("message"));
                 }
                 DialogUtils.getInstance().dismiss();
@@ -201,19 +205,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * 保存登录记录
      */
     private void saveUser() {
-        if (userStrs.length() > 0){
+        if (userStrs.length() > 0) {
             String cacheStr = userStrs + ",";
-            if (cacheStr.indexOf(cashier+",") > -1){
-                cacheStr = cacheStr.replace(cashier+",","");
-                if (cacheStr.endsWith(",")){
-                    cacheStr = cacheStr.substring(0,cacheStr.length()-1);
+            if (cacheStr.indexOf(cashier + ",") > -1) {
+                cacheStr = cacheStr.replace(cashier + ",", "");
+                if (cacheStr.endsWith(",")) {
+                    cacheStr = cacheStr.substring(0, cacheStr.length() - 1);
                 }
-                PreferencesUtil.getInstance(BaseApplication.mContext).putString(Constant.USERS,cashier + "," + cacheStr);
-            }else {
-                PreferencesUtil.getInstance(BaseApplication.mContext).putString(Constant.USERS,cashier + "," + userStrs);
+                PreferencesUtil.getInstance(BaseApplication.mContext).putString(Constant.USERS, cashier + "," + cacheStr);
+            } else {
+                PreferencesUtil.getInstance(BaseApplication.mContext).putString(Constant.USERS, cashier + "," + userStrs);
             }
-        }else {
-            PreferencesUtil.getInstance(BaseApplication.mContext).putString(Constant.USERS,cashier);
+        } else {
+            PreferencesUtil.getInstance(BaseApplication.mContext).putString(Constant.USERS, cashier);
         }
     }
 }

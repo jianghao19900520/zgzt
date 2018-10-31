@@ -127,6 +127,8 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
         code_input_et.setOnClickListener(this);
         findViewById(R.id.bills_date_extend_btn).setOnClickListener(this);
         findViewById(R.id.scan_btn).setOnClickListener(this);
+        findViewById(R.id.back_btn).setOnClickListener(this);
+        findViewById(R.id.confirm_btn).setOnClickListener(this);
     }
 
     public void initTitle() {
@@ -208,27 +210,7 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
 //                startActivity(new Intent(this, ScannerActivity.class));
                 break;
             case R.id.title_right_text:
-                new QMUIDialog.MessageDialogBuilder(this)
-                        .setTitle("温馨提示")
-                        .setMessage("是否提交该调拨单？")
-                        .addAction("取消", new QMUIDialogAction.ActionListener() {
-                            @Override
-                            public void onClick(QMUIDialog dialog, int index) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .addAction(0, "提交", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
-                            @Override
-                            public void onClick(QMUIDialog dialog, int index) {
-                                try {
-                                    doSubmit();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                dialog.dismiss();
-                            }
-                        })
-                        .create(mCurrentDialogStyle).show();
+                confirmDialog();
                 break;
             case R.id.code_input_et:
                 doSearchGoods();
@@ -236,8 +218,39 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
             case R.id.title_back_btn:
                 AddNewAllotActivity.this.finish();
                 break;
+            case R.id.back_btn:
+                AddNewAllotActivity.this.finish();
+                break;
+            case R.id.confirm_btn:
+                confirmDialog();
+                break;
         }
     }
+
+    private void confirmDialog() {
+        new QMUIDialog.MessageDialogBuilder(this)
+                .setTitle("温馨提示")
+                .setMessage("是否提交该调拨单？")
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction(0, "提交", QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        try {
+                            doSubmit();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        dialog.dismiss();
+                    }
+                })
+                .create(mCurrentDialogStyle).show();
+    }
+
 
     /**
      * 搜索页面
