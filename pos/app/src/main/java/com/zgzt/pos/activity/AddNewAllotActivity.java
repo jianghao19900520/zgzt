@@ -103,7 +103,7 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
             addGoodsItem(item.getItem());
         } else if (action == 2) {
             try {
-                update(item.getItem().getString("purchaseNum"));
+                update(item.getItem());
                 editIndex = -1;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -409,11 +409,18 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void update(String purchaseNum) throws JSONException {
+    private void update(JSONObject item) throws JSONException {
         if (editIndex > -1) {
+            String purchaseNum = item.getString("purchaseNum");
+            String color = item.getString("color");
+            String size = item.getString("size");
             goodsData.get(editIndex).put("purchaseNum", purchaseNum);
+            goodsData.get(editIndex).put("color", color);
+            goodsData.get(editIndex).put("size", size);
             TextView numTv = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_num);
             numTv.setText("X " + purchaseNum);
+            TextView scTv = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_sku);
+            scTv.setText("颜色:" + color + "#尺码:" + size);
         }
     }
 
@@ -455,6 +462,9 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
                     intent.putExtra("data", item.toString());
                     intent.putExtra("num", goodsData.get(index).getInt("purchaseNum"));
                     intent.putExtra("action", 2);
+                    intent.putExtra("color", goodsData.get(index).getString("color"));
+                    intent.putExtra("size", goodsData.get(index).getString("size"));
+                    intent.putExtra("edit", true);
                     startActivity(intent);
                     editIndex = index;
                 } catch (JSONException e) {

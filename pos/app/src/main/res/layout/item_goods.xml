@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,11 +19,11 @@
             <LinearLayout
                 android:layout_width="360dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="10dp"
-                android:layout_marginBottom="5dp">
+                android:paddingTop="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -56,79 +55,82 @@
                                 android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:maxLines="2"
-                                tools:text="秋冬新款女式毛妮大衣双层加厚长款大衣秋冬新款"
                                 android:textColor="#333333"
-                                android:textSize="13dp" />
+                                android:textSize="13dp"
+                                tools:text="秋冬新款女式毛妮大衣双层加厚长款大衣秋冬新款" />
 
                             <ImageView
                                 android:id="@+id/item_edit_btn"
                                 android:layout_width="45dp"
                                 android:layout_height="30dp"
-                                android:paddingLeft="25dp"
                                 android:clickable="true"
                                 android:paddingBottom="10dp"
+                                android:paddingLeft="25dp"
                                 android:src="@drawable/edit" />
                         </LinearLayout>
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:gravity="bottom"
-                            android:orientation="horizontal">
+                            android:layout_alignParentBottom="true">
 
                             <TextView
                                 android:id="@+id/item_sku"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="3dp"
-                                android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:lines="1"
-                                tools:text="红色M码"
                                 android:textColor="#999999"
-                                android:textSize="11dp" />
-
-                            <TextView
-                                android:id="@+id/item_price_pay"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="3dp"
-                                android:layout_weight="1"
-                                android:ellipsize="end"
-                                android:gravity="right"
-                                android:lines="1"
-                                tools:text="￥168.00"
-                                android:textColor="#ff5c00"
-                                android:textSize="11dp" />
-
-                            <TextView
-                                android:id="@+id/item_price"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="5dp"
-                                android:layout_weight="1"
-                                android:ellipsize="end"
-                                android:lines="1"
-                                tools:text="￥180.00"
-                                android:textColor="#999999"
-                                android:textSize="11dp" />
+                                android:textSize="11dp"
+                                tools:text="颜色:黑色#尺码:XXL"
+                                android:layout_centerVertical="true"/>
 
                             <TextView
                                 android:id="@+id/item_num"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
                                 android:layout_marginLeft="3dp"
-                                android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:gravity="right"
                                 android:lines="1"
-                                tools:text="X 5"
                                 android:textColor="#333333"
-                                android:textSize="15dp" />
+                                android:textSize="15dp"
+                                tools:text="X 5"
+                                android:layout_marginBottom="5dp"/>
+
+                            <TextView
+                                android:id="@+id/item_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="25dp"
+                                android:layout_toLeftOf="@id/item_num"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:paddingLeft="5dp"
+                                android:textColor="#999999"
+                                android:textSize="11dp"
+                                tools:text="￥180.00"
+                                android:layout_centerVertical="true" />
+
+                            <TextView
+                                android:id="@+id/item_price_pay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="3dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_toLeftOf="@id/item_price"
+                                android:ellipsize="end"
+                                android:gravity="right"
+                                android:lines="1"
+                                android:textColor="#ff5c00"
+                                android:textSize="11dp"
+                                tools:text="￥168.00"
+                                android:layout_centerVertical="true" />
 
 
-                        </LinearLayout>
+                        </RelativeLayout>
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -140,9 +142,9 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:background="@color/color_red_bg"
+                android:clickable="true"
                 android:gravity="center"
                 android:text="删除"
-                android:clickable="true"
                 android:textColor="@android:color/white"
                 android:textSize="15dp" />
         </LinearLayout>
@@ -153,9 +155,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#C5C5C5"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp"
+        android:background="#C5C5C5" />
 </LinearLayout>
 
 

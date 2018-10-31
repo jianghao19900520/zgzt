@@ -587,6 +587,11 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                     intent.putExtra("price", goodsData.get(index).getString("discountPrice"));
                     intent.putExtra("num", goodsData.get(index).getInt("purchaseNum"));
                     intent.putExtra("action", 2);
+                    intent.putExtra("edit", true);
+                    String color = (String) v.getTag(R.id.goods_info_color);
+                    String size = (String) v.getTag(R.id.goods_info_size);
+                    intent.putExtra("color", color);
+                    intent.putExtra("size", size);
                     startActivity(intent);
                     editIndex = index;
                 } catch (JSONException e) {
@@ -615,6 +620,11 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
             itemPriceTv.setText("￥" + itemPrice);
             itemNumTv.setText("X" + itemNum);
             setButtomPrice();
+            String color = item.getString("color");
+            String size = item.getString("size");
+            itemSkuTv.setText("颜色:" + color + "#尺码:" + size);
+            itemEditBtn.setTag(R.id.goods_info_color, color);
+            itemEditBtn.setTag(R.id.goods_info_size, size);
 
             itemDelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -659,10 +669,17 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
             TextView numTv = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_num);
             TextView itemPriceTv = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_price);
             TextView itemPricePayTv = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_price_pay);
+            TextView item_sku = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_sku);
+            ImageView item_edit_btn = goods_item_layout.getChildAt(editIndex).findViewById(R.id.item_edit_btn);
             numTv.setText("X " + newNum);
             itemPriceTv.setText("￥ " + newPrice);
             itemPricePayTv.setText("￥ " + newPricePay);
             setButtomPrice();
+            String color = item.getString("color");
+            String size = item.getString("size");
+            item_sku.setText("颜色:" + color + "#尺码:" + size);
+            item_edit_btn.setTag(R.id.goods_info_color, color);
+            item_edit_btn.setTag(R.id.goods_info_size, size);
         }
     }
 

@@ -7,4 +7,7 @@
     <item name="id_ck_checked_id" type="id"></item>
     <item name="id_ck_checked_value" type="id"></item>
     <item name="id_ck_checked_index" type="id"></item>
+
+    <item name="goods_info_color" type="id"></item>
+    <item name="goods_info_size" type="id"></item>
 </resources>

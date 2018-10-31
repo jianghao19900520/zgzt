@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class GoodsInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -56,6 +57,7 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
     private TextView goods_price;
     private TextView discount_tv;
     private TextView goods_num;
+    private TextView goods_add_btn;
 
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
 
@@ -107,7 +109,8 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.goods_num_reduce_btn).setOnClickListener(this);
         findViewById(R.id.goods_num_plus_btn).setOnClickListener(this);
         findViewById(R.id.goods_cancel_btn).setOnClickListener(this);
-        findViewById(R.id.goods_add_btn).setOnClickListener(this);
+        goods_add_btn = findViewById(R.id.goods_add_btn);
+        goods_add_btn.setOnClickListener(this);
         findViewById(R.id.discount__modify_btn).setOnClickListener(this);
     }
 
@@ -120,6 +123,11 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
         selectText = new ArrayList<>();
         size = intent.getStringExtra("size");
         color = intent.getStringExtra("color");
+        if (intent.getBooleanExtra("edit", false)) {
+            goods_add_btn.setText("修改");
+        } else {
+            goods_add_btn.setText("添加");
+        }
         action = intent.getIntExtra("action", 1);
         if (action == 2) {
             // 如果是修改 则需要拿到 原来的商品信息
@@ -291,6 +299,13 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
                     @Override
                     public void onClick(View v) {
                         TextView newTv = (TextView) v;
+                        String info = (String) newTv.getText();
+                        Pattern p = Pattern.compile("[a-zA-z]");
+                        if (p.matcher(info).find()) {
+                            size = info;
+                        } else {
+                            color = info;
+                        }
                         int newIndex = (int) v.getTag();
                         int oldIndex = (int) skuKeyTv.getTag(R.id.id_sku_checked_index);
                         if (newIndex != oldIndex) {
@@ -377,6 +392,12 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
                 finish();
                 break;
             case R.id.goods_add_btn:
+                try {
+                    checkSUKItem.put("color", color);
+                    checkSUKItem.put("size", size);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 EventBus.getDefault().post(new GoodsEvent(checkSUKItem, action));
                 finish();
                 break;
