@@ -37,7 +37,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class GoodsInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -74,6 +76,9 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
     private int action = 1;//1.新增 2.修改
     private String editPrice;
     private String goodsPriceOld;
+    private String color = "";
+    private String size = "";
+    private List<TextView> selectText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +117,9 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
         title_text.setText("商品信息");
         Intent intent = getIntent();
         what = intent.getStringExtra("what");
+        selectText = new ArrayList<>();
+        size = intent.getStringExtra("size");
+        color = intent.getStringExtra("color");
         action = intent.getIntExtra("action", 1);
         if (action == 2) {
             // 如果是修改 则需要拿到 原来的商品信息
@@ -248,6 +256,7 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void setSkuData() throws JSONException {
+        selectText.clear();
         Iterator<String> keys = mAttrMap.keys();
         sku_layout.removeAllViews();
         while (keys.hasNext()) {
@@ -258,14 +267,14 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
 
             final QMUIFloatLayout floatLayout = itemView.findViewById(R.id.item_sku_layout);
             floatLayout.removeAllViews();
-            JSONArray attrValNnameS = mAttrMap.getJSONArray(key);
-            int len = attrValNnameS.length();
+            JSONArray attrValNameS = mAttrMap.getJSONArray(key);
+            int len = attrValNameS.length();
             for (int i = 0; i < len; i++) {
                 final TextView skuValueTv = (TextView) inflater.inflate(R.layout.item_sku_value, floatLayout, false);
                 skuValueTv.setTag(i);
-                final JSONObject valueItem = attrValNnameS.getJSONObject(i);
-                if (valueItem.toString().contains("attrValNname")) {
-                    skuValueTv.setText(valueItem.getString("attrValNname"));
+                final JSONObject valueItem = attrValNameS.getJSONObject(i);
+                if (valueItem.toString().contains("attrValName")) {
+                    skuValueTv.setText(valueItem.getString("attrValName"));
                 }
                 String itemAttrValId = valueItem.getString("attrValId");
                 if (attrValId.indexOf(itemAttrValId) > -1) {
@@ -273,12 +282,11 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
                     skuValueTv.setTextColor(getResources().getColor(R.color.white));
                     skuKeyTv.setTag(R.id.id_sku_checked_index, i);
                     skuKeyTv.setTag(R.id.id_sku_checked_id, valueItem.getString("attrValId"));
-                    skuKeyTv.setTag(R.id.id_sku_checked_value, valueItem.getString("attrValNname"));
+                    skuKeyTv.setTag(R.id.id_sku_checked_value, valueItem.getString("attrValName"));
                 } else {
                     skuValueTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.sku_bg_unchecked));
                     skuValueTv.setTextColor(getResources().getColor(R.color.color_33));
                 }
-
                 skuValueTv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -297,7 +305,7 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
                                 String oldValue = (String) skuKeyTv.getTag(R.id.id_sku_checked_value);
 
                                 String newId = valueItem.getString("attrValId");
-                                String newValue = valueItem.getString("attrValNname");
+                                String newValue = valueItem.getString("attrValName");
                                 attrValId = attrValId.replace(oldId, newId);
                                 getCheckedItem();
 
@@ -310,9 +318,15 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
                         }
                     }
                 });
+                selectText.add(skuValueTv);
                 floatLayout.addView(skuValueTv);
             }
             sku_layout.addView(itemView);
+        }
+
+        for (TextView textView : selectText) {
+            if (textView.getText().equals(color) || textView.getText().equals(size))
+                textView.performClick();
         }
     }
 

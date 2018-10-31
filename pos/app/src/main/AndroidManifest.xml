@@ -64,6 +64,9 @@
             android:name=".activity.AddNewAllotActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.AddNewSearchActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".activity.StockAllotActivity"
             android:screenOrientation="portrait"/>
         <activity

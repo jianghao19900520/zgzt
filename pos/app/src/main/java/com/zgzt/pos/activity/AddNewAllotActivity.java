@@ -245,10 +245,7 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
     private void doSearchGoods() {
         if (checkCK()) {
             try {
-                Intent intent = new Intent(this, SearchActivity.class);
-                intent.putExtra("type", "search");
-                intent.putExtra("what", "DiaoBo");
-                intent.putExtra("whId", PreferencesUtil.getInstance(mContext).getString(Constant.WAREHOUSE_ID));
+                Intent intent = new Intent(this, AddNewSearchActivity.class);
                 startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
