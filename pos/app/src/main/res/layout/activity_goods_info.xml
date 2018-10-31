@@ -183,7 +183,9 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/input_bg_square"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
 
                     <ImageView
                         android:id="@+id/goods_num_reduce_btn"
@@ -198,14 +200,16 @@
                         android:layout_height="match_parent"
                         android:background="#EBEBEB" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/goods_num"
                         android:layout_width="75dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="1"
                         android:textColor="#ff5c00"
-                        android:textSize="18dp" />
+                        android:textSize="18dp"
+                        android:inputType="number"
+                        android:background="@null"/>
 
                     <View
                         android:layout_width="1dp"

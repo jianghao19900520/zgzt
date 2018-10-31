@@ -56,7 +56,7 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
     private LinearLayout discount_layout;
     private TextView goods_price;
     private TextView discount_tv;
-    private TextView goods_num;
+    private EditText goods_num;
     private TextView goods_add_btn;
 
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
@@ -112,6 +112,38 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
         goods_add_btn = findViewById(R.id.goods_add_btn);
         goods_add_btn.setOnClickListener(this);
         findViewById(R.id.discount__modify_btn).setOnClickListener(this);
+        goods_num.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    num = Integer.parseInt(goods_num.getText().toString());
+                    if (num < 1) {
+                        num = 1;
+                        goods_num.setText(String.valueOf(num));
+                        checkSUKItem.put("purchaseNum", num);
+                        checkSUKItem.put("purchaseNum", num);
+                    } else if (num > checkSUKItem.getInt("stockQty")) {
+                        num = checkSUKItem.getInt("stockQty");
+                        goods_num.setText(String.valueOf(num));
+                        checkSUKItem.put("purchaseNum", num);
+                    } else {
+                        checkSUKItem.put("purchaseNum", num);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void initTitle() {

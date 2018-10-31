@@ -620,11 +620,6 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
             itemPriceTv.setText("￥" + itemPrice);
             itemNumTv.setText("X" + itemNum);
             setButtomPrice();
-            String color = item.getString("color");
-            String size = item.getString("size");
-            itemSkuTv.setText("颜色:" + color + "#尺码:" + size);
-            itemEditBtn.setTag(R.id.goods_info_color, color);
-            itemEditBtn.setTag(R.id.goods_info_size, size);
 
             itemDelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -638,6 +633,12 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                     mOrderId = "";
                 }
             });
+
+            String color = item.getString("color");
+            String size = item.getString("size");
+            itemSkuTv.setText("颜色:" + color + "#尺码:" + size);
+            itemEditBtn.setTag(R.id.goods_info_color, color);
+            itemEditBtn.setTag(R.id.goods_info_size, size);
 
         } catch (JSONException e) {
             e.printStackTrace();
