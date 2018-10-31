@@ -99,6 +99,7 @@ public class DayPayActivity extends AppCompatActivity implements View.OnClickLis
     public void initTitle() {
         title_text.setText("支付明细");
         title_back_btn.setVisibility(View.VISIBLE);
+        title_back_btn.setOnClickListener(this);
         Bundle bundle = getIntent().getBundleExtra("bundle");
         mPayMangerItemNode = (PayMangerItemNode) bundle.getSerializable("node");
         String date = TimeUtils.millis2String(mPayMangerItemNode.getStatisticsTime(), new SimpleDateFormat("yyyy-MM-dd"));
@@ -245,6 +246,9 @@ public class DayPayActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.select_clerk_btn:
                 showClerks();
+                break;
+            case R.id.title_back_btn:
+                DayPayActivity.this.finish();
                 break;
         }
     }

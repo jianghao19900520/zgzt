@@ -26,8 +26,8 @@ public class BaseApplication extends Application {
             .dontAnimate()
             .override(400, 400)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .placeholder(R.drawable.bg_1)
-            .error(R.drawable.bg_1);
+            .placeholder(R.drawable.deault_goods)
+            .error(R.drawable.deault_goods);
 
     @Override
     protected void attachBaseContext(Context base) {

@@ -49,7 +49,6 @@ public class StockFilterActivity extends AppCompatActivity implements View.OnCli
         mContext = this;
         inflater = LayoutInflater.from(mContext);
         initView();
-        initTitle();
         initData();
     }
 
@@ -67,12 +66,6 @@ public class StockFilterActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.area_btn).setOnClickListener(this);
         findViewById(R.id.warehouse_btn).setOnClickListener(this);
         findViewById(R.id.affirm_btn).setOnClickListener(this);
-    }
-
-    public void initTitle() {
-        Intent intent = getIntent();
-        whId = intent.getStringExtra("whId");
-        whName = intent.getStringExtra("whName");
     }
 
     private void initData(){

@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -51,13 +51,27 @@
             android:name=".activity.StockFilterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AnimAppTheme" />
-        <activity android:name=".activity.DayPayActivity" />
-        <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.GoodsInfoActivity" />
-        <activity android:name=".activity.AddNewAllotActivity" />
-        <activity android:name=".activity.StockAllotActivity" />
-        <activity android:name=".activity.InStockDetailsActivity" />
-        <activity android:name=".activity.OutStockDetailsActivity"></activity>
+        <activity
+            android:name=".activity.DayPayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.GoodsInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddNewAllotActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.StockAllotActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.InStockDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.OutStockDetailsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

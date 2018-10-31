@@ -193,6 +193,9 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                     }
                 }
                 break;
+            case R.id.title_back_btn:
+                CashierDeskActivity.this.finish();
+                break;
         }
     }
 
@@ -202,6 +205,7 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
     private void initTitle() {
         title_text.setText("收银台");
         title_back_btn.setVisibility(View.VISIBLE);
+        title_back_btn.setOnClickListener(this);
     }
 
     /**

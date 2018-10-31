@@ -127,6 +127,12 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
         }
 
         title_back_btn.setVisibility(View.VISIBLE);
+        title_back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchActivity.this.finish();
+            }
+        });
         if ("scan".equals(mType)) {
             keywords = intent.getStringExtra("code");
         }

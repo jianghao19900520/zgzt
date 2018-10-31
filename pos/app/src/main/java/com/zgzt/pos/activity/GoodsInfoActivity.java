@@ -108,6 +108,7 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
 
     public void initTitle() {
         title_back_btn.setVisibility(View.VISIBLE);
+        title_back_btn.setOnClickListener(this);
         title_text.setText("商品信息");
         Intent intent = getIntent();
         what = intent.getStringExtra("what");
@@ -364,6 +365,9 @@ public class GoodsInfoActivity extends AppCompatActivity implements View.OnClick
             case R.id.goods_add_btn:
                 EventBus.getDefault().post(new GoodsEvent(checkSUKItem, action));
                 finish();
+                break;
+            case R.id.title_back_btn:
+                GoodsInfoActivity.this.finish();
                 break;
         }
     }
