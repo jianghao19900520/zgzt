@@ -384,7 +384,6 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                         try {
                             JSONObject object = new JSONObject(String.valueOf(result));
                             mOrderId = object.getString("result");
-                            mOrderId = "8w1ium7r2v2";//todo jianghao 测试数据
                             if (TextUtils.isEmpty(mOrderId) || mOrderId.equals("null")) {
                                 ToastUtils.showShort(BaseApplication.mContext, object.getString("message"));
                             } else {
