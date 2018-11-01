@@ -296,6 +296,7 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
                     skuName.setText(itemData.getString("skuProperty"));
                     skuNum.setText(itemData.getString("stockVolume") + "件");
                     skuLayout.addView(stock_sku);
+                    stock_sku.setOnClickListener(null);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
