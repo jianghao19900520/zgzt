@@ -98,22 +98,26 @@
                     android:layout_weight="1">
 
                     <CheckBox
+                        android:id="@+id/back_finance_ck"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="返利"
                         android:textColor="@color/color_33"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:theme="@style/MyCheckBox"/>
 
                     <CheckBox
+                        android:id="@+id/back_integral_ck"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="返利积分"
                         android:textColor="@color/color_33"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:theme="@style/MyCheckBox" />
                 </LinearLayout>
             </LinearLayout>
 

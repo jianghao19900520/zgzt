@@ -331,8 +331,10 @@ public class AddNewSearchActivity extends AppCompatActivity implements View.OnCl
         if (intentResult != null) {
             if (intentResult.getContents() != null) {
                 String scanResult = intentResult.getContents();
-                code_input_et.setText(scanResult);
-                search_btn.performClick();
+                if(!TextUtils.isEmpty(scanResult)) {
+                    code_input_et.setText(scanResult);
+                    search_btn.performClick();
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

@@ -294,8 +294,10 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
         if (intentResult != null) {
             if (intentResult.getContents() != null) {
                 String scanResult = intentResult.getContents();
-                search_input_et.setText(scanResult);
-                search_btn.performClick();
+                if(!TextUtils.isEmpty(scanResult)){
+                    search_input_et.setText(scanResult);
+                    search_btn.performClick();
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

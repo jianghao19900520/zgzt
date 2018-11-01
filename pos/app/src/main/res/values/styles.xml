@@ -46,4 +46,9 @@
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
     </style>
 
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/color_blue</item>
+        <item name="colorControlActivated">@color/color_blue</item>
+    </style>
+
 </resources>

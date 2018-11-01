@@ -13,6 +13,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -69,6 +71,8 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
     private TextView total_money;
     private TextView all_pay_money_tv;
     private TextView total_num;
+    private CheckBox back_finance_ck;
+    private CheckBox back_integral_ck;
 
     private LayoutInflater inflater;
     private ShowPopupWindow showPopupWindow;
@@ -150,6 +154,28 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.code_input_et).setOnClickListener(this);
         findViewById(R.id.clear_goods_btn).setOnClickListener(this);
         findViewById(R.id.balance_btn).setOnClickListener(this);
+        back_finance_ck = findViewById(R.id.back_finance_ck);
+        back_finance_ck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    isBackFinance = "0";
+                }else{
+                    isBackFinance = "1";
+                }
+            }
+        });
+        back_integral_ck = findViewById(R.id.back_integral_ck);
+        back_integral_ck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    isBackIntegral = "0";
+                }else{
+                    isBackIntegral = "1";
+                }
+            }
+        });
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -321,8 +322,10 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         if (intentResult != null) {
             if (intentResult.getContents() == null) {
                 String scanResult = intentResult.getContents();
-                code_input_et.setText(scanResult);
-                search_btn.performClick();
+                if (!TextUtils.isEmpty(scanResult)) {
+                    code_input_et.setText(scanResult);
+                    search_btn.performClick();
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
