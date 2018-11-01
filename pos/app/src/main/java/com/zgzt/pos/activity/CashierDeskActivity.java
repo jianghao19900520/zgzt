@@ -158,9 +158,9 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
         back_finance_ck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     isBackFinance = "0";
-                }else{
+                } else {
                     isBackFinance = "1";
                 }
             }
@@ -169,9 +169,9 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
         back_integral_ck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     isBackIntegral = "0";
-                }else{
+                } else {
                     isBackIntegral = "1";
                 }
             }
@@ -560,7 +560,47 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
         step.addText(false, "订单号：" + mOrderId + "\n");
         step.addText(false, "收  银：" + PreferencesUtil.getInstance(mContext).getString(Constant.LOGIN_NAME) + "\n");
 
-        step.addText(true, "\n");
+        step.addText(true, "--------------------------------");
+
+        try {
+            for (JSONObject jsonObject : goodsData) {
+                String productName = jsonObject.getString("productName");//名称
+                String attrVal = jsonObject.getString("attrVal");//颜色
+                String otherVal = jsonObject.getString("otherVal");//尺码
+                String purchaseNum = jsonObject.getString("purchaseNum");//数量
+                String price = jsonObject.getString("price");//原价
+                String discountPrice = jsonObject.getString("discountPrice");//实付
+                if (productName.length() <= 10) {
+                    step.addText(false, "名    称：" + productName + "\n");
+                } else if (productName.length() > 10 && productName.length() <= 20) {
+                    step.addText(false, "名    称：" + productName.substring(0, 10) + "\n");
+                    step.addText(false, "          " + productName.substring(10, productName.length()) + "\n");
+                } else if (productName.length() > 20 && productName.length() <= 30) {
+                    step.addText(false, "名    称：" + productName.substring(0, 10) + "\n");
+                    step.addText(false, "          " + productName.substring(10, 20) + "\n");
+                    step.addText(false, "          " + productName.substring(20, productName.length()) + "\n");
+                } else if (productName.length() > 30 && productName.length() <= 40) {
+                    step.addText(false, "名    称：" + productName.substring(0, 10) + "\n");
+                    step.addText(false, "          " + productName.substring(10, 20) + "\n");
+                    step.addText(false, "          " + productName.substring(20, 30) + "\n");
+                    step.addText(false, "          " + productName.substring(30, productName.length()) + "\n");
+                } else {
+                    step.addText(false, "名    称：" + productName.substring(0, 10) + "\n");
+                    step.addText(false, "          " + productName.substring(10, 20) + "\n");
+                    step.addText(false, "          " + productName.substring(20, 30) + "\n");
+                    step.addText(false, "          " + productName.substring(30, 40) + "\n");
+                    step.addText(false, "          " + productName.substring(40, productName.length()) + "\n");
+                }
+                step.addText(false, "颜    色：" + attrVal + "\n");
+                step.addText(false, "尺    码：" + otherVal + "码\n");
+                step.addText(false, "数    量：" + purchaseNum + "\n");
+                step.addText(false, "原    价：￥" + price + "\n");
+                step.addText(false, "实    付：￥" + discountPrice + "\n");
+                step.addText(true, "--------------------------------");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         step.addText(false, "数量小计：" + totalNum + "\n");
         step.addText(false, "总 价 格：￥" + totalMoney + "\n");
