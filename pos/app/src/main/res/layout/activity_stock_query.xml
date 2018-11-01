@@ -19,8 +19,7 @@
             android:layout_height="match_parent"
             android:clickable="true"
             android:padding="10dp"
-            android:src="@drawable/scancode"
-            android:visibility="gone"/>
+            android:src="@drawable/scancode"/>
 
         <EditText
             android:id="@+id/code_input_et"
@@ -28,7 +27,6 @@
             android:layout_height="35dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:background="@drawable/input_bg_corners"
             android:drawableLeft="@drawable/search"

@@ -11,12 +11,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codbking.widget.DatePickDialog;
 import com.codbking.widget.OnChangeLisener;
 import com.codbking.widget.OnSureLisener;
 import com.codbking.widget.bean.DateType;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.zgzt.pos.R;
@@ -207,7 +210,10 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
                 showDate();
                 break;
             case R.id.scan_btn:
-//                startActivity(new Intent(this, ScannerActivity.class));
+                new IntentIntegrator(this)
+                        .setOrientationLocked(false)
+                        .setCaptureActivity(ScanActivity.class)
+                        .initiateScan();
                 break;
             case R.id.title_right_text:
                 confirmDialog();
@@ -508,6 +514,21 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
         goods_item_layout.addView(itemRoot);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult != null) {
+            if (intentResult.getContents() == null) {
+                Toast.makeText(this, "内容为空", Toast.LENGTH_LONG).show();
+            } else {
+                // ScanResult 为 获取到的字符串
+                String ScanResult = intentResult.getContents();
+                Toast.makeText(this, "扫描成功，内容为" + ScanResult, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 }

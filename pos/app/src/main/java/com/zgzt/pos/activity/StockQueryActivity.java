@@ -13,8 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
@@ -200,7 +203,10 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
                 overridePendingTransition(0, 0);
                 break;
             case R.id.scan_btn:
-//                startActivity(new Intent(this, ScannerActivity.class));
+                new IntentIntegrator(this)
+                        .setOrientationLocked(false)
+                        .setCaptureActivity(ScanActivity.class)
+                        .initiateScan();
                 break;
             case R.id.search_btn:
                 searchKey = code_input_et.getText().toString().trim();
@@ -305,6 +311,21 @@ public class StockQueryActivity extends AppCompatActivity implements View.OnClic
         whName = item.getWhName();
         pageIndex = 0;
         getSearchStock(true);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult != null) {
+            if (intentResult.getContents() == null) {
+                Toast.makeText(this, "内容为空", Toast.LENGTH_LONG).show();
+            } else {
+                // ScanResult 为 获取到的字符串
+                String ScanResult = intentResult.getContents();
+                Toast.makeText(this, "扫描成功，内容为" + ScanResult, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 }

@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -160,7 +162,10 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.scan_btn:
                 // 扫码
-//                startActivity(new Intent(this, ScannerActivity.class));
+                new IntentIntegrator(this)
+                        .setOrientationLocked(false)
+                        .setCaptureActivity(ScanActivity.class)
+                        .initiateScan();
                 break;
             case R.id.code_input_et:
                 // 搜索商品
@@ -686,7 +691,18 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult != null) {
+            if (intentResult.getContents() == null) {
+                Toast.makeText(this, "内容为空", Toast.LENGTH_LONG).show();
+            } else {
+                // ScanResult 为 获取到的字符串
+                String ScanResult = intentResult.getContents();
+                Toast.makeText(this, "扫描成功，内容为" + ScanResult, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
         if (requestCode == HAIKE_PAY_CODE) {
 //            Bundle b = data.getExtras();
 //            Object[] lstName = b.keySet().toArray();
@@ -711,8 +727,6 @@ public class CashierDeskActivity extends AppCompatActivity implements View.OnCli
                     break;
             }
         }
-
-
     }
 
 }
