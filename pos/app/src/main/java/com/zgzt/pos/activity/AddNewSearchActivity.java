@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,6 +55,7 @@ public class AddNewSearchActivity extends AppCompatActivity implements View.OnCl
     private TextView title_text;//标题
 
     private EditText code_input_et;//输入框
+    private TextView search_btn;
     private SmartRefreshLayout smart_refresh_layout;//下拉刷新控件
     private ListView list_view;
     private LayoutInflater inflater;
@@ -87,7 +89,8 @@ public class AddNewSearchActivity extends AppCompatActivity implements View.OnCl
         title_text = findViewById(R.id.title_text);
         code_input_et = findViewById(R.id.code_input_et);
         findViewById(R.id.scan_btn).setOnClickListener(this);
-        findViewById(R.id.search_btn).setOnClickListener(this);
+        search_btn = findViewById(R.id.search_btn);
+        search_btn.setOnClickListener(this);
         title_back_btn.setOnClickListener(this);
         smart_refresh_layout = findViewById(R.id.smart_refresh_layout);
         list_view = findViewById(R.id.list_view);
@@ -326,12 +329,10 @@ public class AddNewSearchActivity extends AppCompatActivity implements View.OnCl
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (intentResult != null) {
-            if (intentResult.getContents() == null) {
-                Toast.makeText(this, "内容为空", Toast.LENGTH_LONG).show();
-            } else {
-                // ScanResult 为 获取到的字符串
-                String ScanResult = intentResult.getContents();
-                Toast.makeText(this, "扫描成功，内容为" + ScanResult, Toast.LENGTH_LONG).show();
+            if (intentResult.getContents() != null) {
+                String scanResult = intentResult.getContents();
+                code_input_et.setText(scanResult);
+                search_btn.performClick();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

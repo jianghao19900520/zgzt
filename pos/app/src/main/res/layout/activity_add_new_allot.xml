@@ -9,9 +9,9 @@
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_red">
+        android:background="@color/color_red"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/back_btn"
@@ -41,10 +41,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/bottom_layout"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        android:layout_above="@id/bottom_layout">
+        android:orientation="vertical">
 
         <include layout="@layout/include_title" />
 
@@ -132,10 +132,10 @@
                         android:layout_marginLeft="49dp"
                         android:layout_weight="1"
                         android:paddingRight="10dp"
-                        tools:text="华南体验仓"
                         android:textColor="@color/color_33"
                         android:textColorHint="@color/color_99"
-                        android:textSize="13dp" />
+                        android:textSize="13dp"
+                        tools:text="华南体验仓" />
 
                     <ImageView
                         android:layout_width="32dp"
@@ -216,10 +216,10 @@
                         android:layout_marginLeft="49dp"
                         android:layout_weight="1"
                         android:paddingRight="10dp"
-                        tools:text="制单人"
                         android:textColor="@color/color_33"
                         android:textColorHint="@color/color_99"
-                        android:textSize="13dp" />
+                        android:textSize="13dp"
+                        tools:text="制单人" />
 
                     <ImageView
                         android:layout_width="32dp"
@@ -306,7 +306,36 @@
                     android:layout_marginRight="10dp"
                     android:background="#f1f1f1" />
 
-                <include layout="@layout/include_input_scan" />
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/code_input_et"
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/input_bg_corners"
+                        android:clickable="true"
+                        android:drawableLeft="@drawable/search"
+                        android:drawablePadding="2.5dp"
+                        android:gravity="center_vertical"
+                        android:hint="请输入商品编码或名称"
+                        android:lines="1"
+                        android:maxLength="20"
+                        android:paddingLeft="10dp"
+                        android:textColor="#333333"
+                        android:textColorHint="#999999"
+                        android:textSize="13dp" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <FrameLayout

@@ -11,11 +11,15 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
@@ -52,6 +56,7 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
     ImageView title_back_btn;
     EditText search_input_et;
     ListView list_view;
+    Button search_btn;
     SmartRefreshLayout refreshLayout;
 
     private String mType;// 类型：search 搜索商品 scan 扫描二维码
@@ -96,13 +101,23 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
         search_input_et = findViewById(R.id.search_input_et);
         list_view = findViewById(R.id.list_view);
         refreshLayout = findViewById(R.id.refreshLayout);
-        findViewById(R.id.search_btn).setOnClickListener(new View.OnClickListener() {
+        search_btn = findViewById(R.id.search_btn);
+        search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 keywords = search_input_et.getText().toString().trim();
                 InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 getSearchGoodsList(true);
+            }
+        });
+        findViewById(R.id.scan_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new IntentIntegrator(SearchActivity.this)
+                        .setOrientationLocked(false)
+                        .setCaptureActivity(ScanActivity.class)
+                        .initiateScan();
             }
         });
     }
@@ -211,7 +226,7 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
      * 商品搜索
      */
     private void getSearchGoodsList(boolean show) {
-        if(show){
+        if (show) {
             DialogUtils.getInstance().show(mContext);
         }
         HttpApi.searchGoods(pageIndex, Constant.PAGE_SIZE, whId, keywords, new HttpCallback() {
@@ -272,6 +287,19 @@ public class SearchActivity extends AppCompatActivity implements OnRefreshLoadmo
             dataList.add(list.getJSONObject(i));
         }
         adapter.notifyDataSetChanged();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult != null) {
+            if (intentResult.getContents() != null) {
+                String scanResult = intentResult.getContents();
+                search_input_et.setText(scanResult);
+                search_btn.performClick();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 }

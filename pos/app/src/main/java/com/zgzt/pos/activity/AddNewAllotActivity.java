@@ -129,7 +129,6 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
         call_out_name_extend_btn.setOnClickListener(this);
         code_input_et.setOnClickListener(this);
         findViewById(R.id.bills_date_extend_btn).setOnClickListener(this);
-        findViewById(R.id.scan_btn).setOnClickListener(this);
         findViewById(R.id.back_btn).setOnClickListener(this);
         findViewById(R.id.confirm_btn).setOnClickListener(this);
     }
@@ -208,12 +207,6 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.bills_date_extend_btn:
                 showDate();
-                break;
-            case R.id.scan_btn:
-                new IntentIntegrator(this)
-                        .setOrientationLocked(false)
-                        .setCaptureActivity(ScanActivity.class)
-                        .initiateScan();
                 break;
             case R.id.title_right_text:
                 confirmDialog();
@@ -514,21 +507,6 @@ public class AddNewAllotActivity extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
         goods_item_layout.addView(itemRoot);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (intentResult != null) {
-            if (intentResult.getContents() == null) {
-                Toast.makeText(this, "内容为空", Toast.LENGTH_LONG).show();
-            } else {
-                // ScanResult 为 获取到的字符串
-                String ScanResult = intentResult.getContents();
-                Toast.makeText(this, "扫描成功，内容为" + ScanResult, Toast.LENGTH_LONG).show();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
 }
