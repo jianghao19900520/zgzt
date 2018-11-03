@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class AddNewSearchActivity extends AppCompatActivity implements View.OnCl
     private SmartRefreshLayout smart_refresh_layout;//下拉刷新控件
     private ListView list_view;
     private LayoutInflater inflater;
+    private RelativeLayout empty_goods_layout;
 
     private String searchKey;
     private List<JSONObject> listData;//获取到的数据
@@ -101,6 +103,7 @@ public class AddNewSearchActivity extends AppCompatActivity implements View.OnCl
         list_view.setAdapter(adapter);
         smart_refresh_layout.setEnableLoadmore(false);
         smart_refresh_layout.setOnRefreshLoadmoreListener(this);
+        empty_goods_layout = findViewById(R.id.empty_goods_layout);
     }
 
     @Override
@@ -183,11 +186,16 @@ public class AddNewSearchActivity extends AppCompatActivity implements View.OnCl
         }
         JSONArray list = result.getJSONArray("list");
         int len = list.length();
-        for (int i = 0; i < len; i++) {
-            listData.add(list.getJSONObject(i));
+        if (len > 0) {
+            empty_goods_layout.setVisibility(View.GONE);
+            for (int i = 0; i < len; i++) {
+                listData.add(list.getJSONObject(i));
+            }
+            showListData = listData;
+            adapter.notifyDataSetChanged();
+        } else {
+            empty_goods_layout.setVisibility(View.VISIBLE);
         }
-        showListData = listData;
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -331,7 +339,7 @@ public class AddNewSearchActivity extends AppCompatActivity implements View.OnCl
         if (intentResult != null) {
             if (intentResult.getContents() != null) {
                 String scanResult = intentResult.getContents();
-                if(!TextUtils.isEmpty(scanResult)) {
+                if (!TextUtils.isEmpty(scanResult)) {
                     code_input_et.setText(scanResult);
                     search_btn.performClick();
                 }

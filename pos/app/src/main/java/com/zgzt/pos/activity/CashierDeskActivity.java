@@ -27,6 +27,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zgzt.pos.utils.PrinterStep;
 import com.zgzt.pos.base.BaseApplication;
 import com.zgzt.pos.R;
